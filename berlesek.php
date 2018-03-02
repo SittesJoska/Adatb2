@@ -23,7 +23,7 @@ if(ISSET($_POST["submit"])) {
 		error_log("Valamelyik mező nincs kitöltve!");
 	}
 }
-echo 'csicska'
+echo 'csicska fasz'
 ?>
 <form method="POST">
 Bérleti díj:
