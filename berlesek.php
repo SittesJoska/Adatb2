@@ -15,6 +15,7 @@ if(ISSET($_POST["submit"])) {
 		$berles_vege = strval($_POST["berles_vege"]);
 		$adoszam = $_POST["adoszam"];
 		$lakasszam = $_POST["lakasszam"];
+		echo "csicska geci";
 		
 		insertBerles($berleti_dij, $berles_kezdete, $berles_vege, $adoszam, $lakasszam);
 
