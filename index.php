@@ -41,7 +41,7 @@
 									}
 									echo '</option>';
 								}
-							?> 
+							?>
 						</select>
 			<p>Hova:</p><select name="honnan">
 							<option disabled selected value> -- select an option -- </option>
