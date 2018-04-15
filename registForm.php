@@ -26,13 +26,13 @@
 	<div class="registerFields">
 	<form method="post" action="regist.php">	
 		<h2>Regisztráció</h2>
-		<p>Felhasználónév:</p><input type="text" name="username" required size="15" maxlength="30" class="inputType" />			
-		<p>Jelszó:</p> <input type="password" name="password" pattern=".{5,30}"  maxlength="30" required size="15" class="inputType"/>	
-		<p>Jelszó megerősítése:</p> <input type="password" name="passwordConfirm"  maxlength="30" required size="15" class="inputType"/>
-		<p>Név:</p><input type="text" name="name" required size="15" maxlength="50" class="inputType" />		
-		<p>Bankszámlaszám:</p><input type="text" name="accountNumber" required pattern=".{15,15}" maxlength="15" size="15" class="inputType" />			
-		<p>E-mail cím:</p><input type="email" name="email" required size="15"  maxlength="20" class="inputType" placeholder="valaki@valami.hu" />
-		<p>Telefonszám:</p><input type="text" name="phoneNumber" required size="15" placeholder="203411738" maxlength="9" class="inputType" />	
+		<p>Felhasználónév:</p><input type="text" name="username" required="true" size="15" maxlength="30" class="inputType" />			
+		<p>Jelszó:</p> <input type="password" name="password" pattern=".{5,30}"  maxlength="30" required="true" size="15" class="inputType"/>	
+		<p>Jelszó megerősítése:</p> <input type="password" name="passwordConfirm"  maxlength="30" required="true" size="15" class="inputType"/>
+		<p>Név:</p><input type="text" name="name" required="true" size="15" maxlength="50" class="inputType" />		
+		<p>Bankszámlaszám:</p><input type="text" name="accountNumber" required="true" pattern=".{15,15}" maxlength="15" size="15" class="inputType" />			
+		<p>E-mail cím:</p><input type="email" name="email" required="true" size="15"  maxlength="20" class="inputType" placeholder="valaki@valami.hu" />
+		<p>Telefonszám:</p><input type="text" name="phoneNumber" required="true" size="15" placeholder="203411738" maxlength="9" class="inputType" />	
 		
 		<input type="submit" style="padding:10px; margin-top:15%;  width:230px;" value="Regisztráció" name="regist" class="buttonType"/>
 	</form>
