@@ -1,0 +1,580 @@
+body {
+	background: linear-gradient(to right,#eaf2ff, #8babb7);
+}
+
+.div1{
+	width:95%;
+	margin:auto;
+}
+
+
+
+.buttonType {
+	box-shadow: 0px 1px 0px 0px #045170;	
+	background:linear-gradient(to bottom, #054b66 5%, #0080b2 100%);	
+	background-color:#045170;
+	border-radius:6px;
+	border:1px solid #045170;
+	cursor:pointer;
+	color:#e5f7ff;
+	font-family:New Century;
+	font-size:16px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-shadow:0px 1px 0px #045170;
+}
+.buttonType:hover {	
+	background:linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+	background-color:#045170;
+}
+.buttonType:active {
+	position:relative;
+	top:1px;
+}
+.inputType{	
+	font-family:New Century;
+	font-size: 15px;
+	margin-bottom:1%;
+	border-radius: 15px;
+}
+
+#airplaneImg{
+	width:25%;
+	float:left;
+	margin-right:8%;
+}
+.loginDiv{
+	position:center;
+	text-align:center;
+	margin:auto;
+	width:15%;
+	margin-top:10%;
+	padding:2%;
+	border-style: outset;
+    border-width: 5px;
+    border-color: #97aac4;
+	border-radius:15px;
+	padding-left:8%;
+	padding-right:8%;
+	color:#273e63;
+	
+}
+.loginDiv h2{
+	font-family:New Century;
+	text-shadow: 1px 1px gray;
+	font-size: 32px;
+	margin-top:1%;
+}
+.loginDiv p{
+	margin-top:1%;
+	margin-bottom:1%;
+	font-family:New Century;
+}
+header {
+	text-align: left;
+	color:#e5f7ff;
+	padding:auto;
+	background:linear-gradient(to bottom, #054b66 5%, #0080b2 100%);
+	margin-left: auto;
+	margin-right: auto;
+	width:95%;
+	border-radius: 50px;
+	box-shadow: 5px 5px #045170;
+}
+header h1{
+	font-family:New Century;
+	text-shadow: 1px 1px gray;
+	font-size: 42px;
+}
+.container1{
+	width:95%;
+	margin:auto;
+	margin-top:6%;
+	color:#273e63;
+	font-family:New Century;
+	font-size:15px;
+}
+.search{	
+	margin-top:4%;
+	width: 12%;
+	float:left;
+	border-style: outset;
+    border-width: 7px;
+    border-color: #97aac4; 
+	padding:1%;
+	
+}
+.result{
+	margin-left:5%;
+	margin-top:4%;
+	padding:1%;
+	padding-top:0%;
+	width:77%;
+	float:left;
+	border-style: outset;
+    border-width: 7px;
+    border-color: #97aac4;
+	overflow:scroll;	
+	height:550px;
+	overflow-X:hidden;
+}
+	
+table{
+	margin:auto;
+	padding:8px;
+	width:98%;
+	
+}
+tr{
+text-align:center;
+padding-bottom:1%;
+}
+th{
+	color:#c40d00;
+	font-family:New Century;
+	font-size:18px;
+	padding-bottom:1%;
+}
+td{
+
+}
+.registDiv{
+	margin:auto;
+	padding-top:5%;
+	width:95%;
+}
+
+.registerImg{
+	float:left;
+	margin:auto;
+	margin-left:12%;
+	
+}
+.registerFields{
+	text-align:center;
+	padding-top: 5%;
+	float: left;
+	margin-left:10%;
+	padding:1%;
+	width:18%;
+	border-style: outset;
+    border-width: 5px;
+    border-color: #97aac4;
+	border-radius:15px;
+}
+.registerFields h2{
+	font-family:New Century;
+	color:#273e63;
+	text-shadow: 1px 1px gray;
+	font-size: 32px;
+	margin-top:1%;
+}
+.registerFields p{
+	
+	color: #042551;
+	font-family:New Century;
+	font-size: 15px;
+	margin-bottom:3px;	
+
+}
+.registerRules{
+	
+	margin-top:6%;
+	margin-left:4%;
+	padding:1%;
+	width:30%;
+	float:left;
+}
+.registerRules li{
+	
+	color: #990000;
+	font-family:New Century;
+	font-size: 18px;
+	margin-bottom:3px;	
+
+}
+.registerRules h3{
+	color: #990000;
+	font-family:New Century;
+	font-size: 28px;
+	margin-bottom:3px;
+}
+#newUserImg{
+	width:80%;
+	margin: auto;
+	margin-top:50%;
+}
+/*
+
+main h1{
+	text-align:center;
+	color: #042551;	
+	font-family:New Century;
+	font-size: 38px;
+	margin-bottom:1%;
+}
+main h2{
+	text-align:center;
+	color: #042551;	
+	font-family:New Century;
+	font-size: 20px;
+	margin-bottom:1%;
+}
+nav {
+	width:85%;
+	margin:auto;
+	margin-bottom:4%;
+}
+nav a {
+    float: left;
+    padding-left: 1%;
+}
+section{
+	padding-left:1%;
+	margin:auto;
+	color: #042551;	
+	float: left;
+	text-align:center;
+	width:58%;
+}
+section table{
+	margin:auto;
+	margin-top:3%;
+	
+}
+section th{
+	font-size: 18px;
+	font-family:New Century;
+}
+section td p{
+	margin:1%;
+	font-family:New Century;
+	font-size: 15px;
+}
+section select{
+	font-family:New Century;
+	font-size: 18px;
+	margin-bottom:1%;
+	border-radius: 15px;
+}
+section p{
+	font-family:New Century;
+	font-size: 18px;
+}
+.main2{
+	margin:auto;
+	padding-top:3%;
+	width:60%;
+}
+.main2 h1{
+	text-align:center;
+	color: #042551;	
+	font-family:New Century;
+	font-size: 38px;
+	margin-bottom:1%;
+}
+.left{
+	padding-top: 5%;
+	float: left;
+	padding:1%;
+	width:32%;
+}
+.middle{		
+	padding-left:1%;	
+	float: left;
+	margin:auto;
+	text-align:center;
+	width:32%;		
+}
+.middle h2{
+	color: #042551;	
+	font-family:New Century;
+	text-shadow: 1px 1px gray;
+	font-size: 38px;
+	text-align:center;
+	margin-bottom:20px;
+	
+}
+.middle h2:hover{
+	color:red;
+}
+.rigth{
+	padding-left:1%;
+	float: left;
+	width:32%;
+}
+.middle p{
+	
+	color: #042551;
+	font-family:New Century;
+	font-size: 23px;
+	margin-bottom:3px;	
+
+}
+.rigth p{
+	
+	color: #042551;
+	font-family:New Century;
+	font-weight: bold;
+	font-size: 28px;
+	margin-bottom:20px;	
+	transform: rotate(20deg);
+}
+
+.leftPicturesDiv{
+	float:left;
+	width:30%;
+}
+.rightPicturesDiv{
+	float:left;
+	width:28%;
+	padding-left:4%;
+}
+
+.myRecipesDiv{
+	float:left;
+	margin:auto;
+	padding-bottom:15%;
+	text-align:center;
+	background-image: url("paperBackground.jpg");
+	background-size: cover;
+	width:38%;
+	border-radius: 20px;
+	box-shadow: 3px 3px #f2c0a2;
+}
+.myRecipesDiv h1{
+	color: #042551;	
+	font-family:New Century;
+	font-size: 38px;
+	margin-bottom:1%;
+}
+.myRecipesDiv li{
+	color: black;
+	font-family:New Century;
+	font-size: 22px;
+	list-style-position: inside;
+	margin-bottom:5px;	
+	transition: font-size 2s;
+}
+
+.myRecipesDiv li:hover{
+	font-size: 28px;
+}
+
+
+
+
+
+
+.recipeDiv{
+	float:left;
+	margin:auto;
+	padding:0%;
+	width:100%;
+}
+.recipeImgDiv{
+	float:left;
+	margin:auto;
+	padding:auto;
+	width:30%;
+}
+.recipeImgDiv p{
+	font-family:New Century;
+	font-size: 20px;
+	color:#042551;
+	text-align:center;
+}
+.recipeInfoDiv{
+	float:left;
+	margin:auto;
+	padding-bottom:15%;
+	width:40%;
+}
+.recipeDiv h2{
+	text-align:center;
+	color: #042551;	
+	font-family:New Century;
+	font-size: 28px;
+	margin-bottom:1%;
+}
+.recipeDiv h3{
+	text-align:center;
+	color: #042551;	
+	font-family:New Century;
+	font-size: 22px;
+	margin-bottom:1%;
+}
+.ingredients{
+	padding:auto;
+	float:left;
+	padding-bottom:8%;	
+	width:20%;
+	border-radius: 20px;
+	margin-top:4%;
+	margin-left:0%;
+	margin-right:4%;
+	margin-bottom:4%;
+	background-image: url("paperBackground.jpg");
+	background-size: cover;
+	list-style-position: inside;
+}
+
+.preparation{
+	width:38%;
+	float:left;
+	padding-left:1%;
+	padding-right:1%;
+	margin-top:4%;
+	margin-left:0%;
+	margin-right:0%;
+	margin-bottom:4%;
+	border-style: outset;
+    border-width: 7px;
+    border-color: #97aac4;  
+}
+.preparation p{
+	text-align:justify;
+	color: #042551;	
+	font-family:New Century;
+	font-size: 16px;
+}
+.searchMenu{
+	margin:auto;
+	margin-bottom:5%;
+	padding:1%;
+	border-style: outset;
+    border-width: 7px;
+    border-color: #97aac4; 
+	background-color:#d4e2f9;
+	width:50%;
+	text-align:center;
+}
+.searchResult{
+	margin:auto;
+	margin-bottom:10%;
+	padding:2%;
+	border-style: outset;
+    border-width: 7px;
+    border-color: #97aac4; 
+	background-color:#d4e2f9;
+	text-align:center;
+	width:90%;
+}
+.searchResult table{
+	margin:auto;
+	width:100%;
+	
+}
+.searchResult th{
+	text-align:center;
+	padding-bottom:3%;
+	font-family:New Century;
+	font-size: 18px;
+	
+}
+.searchResult td{
+	text-align:center;
+	font-family:New Century;
+	font-size: 16px;
+	width:20%;
+}
+
+#textDiv{
+	color: #dd0000;	
+	font-family:New Century;
+	font-size: 20px;
+	margin-top: 4%;
+	margin-left:10%;
+	
+}
+footer {
+
+    padding:1%;
+    color: white;
+    background-color: black;
+    text-align: center;
+	margin-top:30%;
+	clear: both;
+}
+#recipeImg{
+	width:10%;
+	float: left;
+	padding:1%;
+	padding-right:8%;
+	
+}
+#foodImg{
+	width:100%;
+	float: left;
+	margin-top:6%;
+}
+#foodImg:hover{
+transform: rotateZ(20deg);
+}
+
+#uploadedFood{
+	padding-top:25%;
+	max-width:300px;
+	width:70%;
+	margin: auto;	
+}
+
+#food1Img{
+	width:70%;
+	margin: auto;
+	padding-left:15%;
+}
+#food2Img{
+	width:70%;
+	margin: auto;
+	padding-top:7%;
+}
+#food3Img{
+	width:70%;
+	margin: auto;
+}
+#food4Img{
+	width:70%;
+	margin: auto;
+}
+#recipeInfoFoodImg{
+	animation-name: animation1;
+    animation-duration: 50s;
+	margin:auto;
+	padding-left:18%;
+	padding:auto;
+	max-width:300px;
+	width:70%;
+}
+#clockImg{
+	margin:auto;
+	width:8%;
+	float:left;
+	margin-right:2%;
+}
+#listFoodImg{
+	margin:auto;
+	padding:auto;
+	max-width:170px;
+	width:100%;
+}
+
+.radioType{	
+	margin-bottom:10%;
+}
+
+@keyframes animation1 {	
+	0% {
+		width:20%;
+	   }		
+    25%  {
+		width:70%;
+		}
+    50%  {
+		width:100%;
+		}
+}
+
+
+*/
+
