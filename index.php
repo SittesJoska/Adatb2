@@ -43,7 +43,23 @@
 								}
 							?> 
 						</select>
-			<p>Hova:</p><input type="text" name="to" required size="15" class="inputType" />
+			<p>Hova:</p><select name="honnan">
+							<option disabled selected value> -- select an option -- </option>
+							<?php
+								$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'érkezik'";
+								$stid = oci_parse($conn, $sql); 
+     
+								oci_execute($stid);
+
+								while ( $row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+									echo '<option>';
+									foreach ($row as $item) {
+										echo $item ;
+									}
+									echo '</option>';
+								}
+							?> 
+						</select>
 			<p>Indulás dátuma</p><input type="date" name="startDate" required min="1900-01-01"/>	
 			<p>Érkezés dátuma</p><input type="date" name="arriveDate" required min="1900-01-01"/>
 			<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />	
