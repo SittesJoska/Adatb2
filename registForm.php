@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="charset=iso-8859-2"/>
+	<meta charset="utf-8"/>
     <meta name="description" content="Főoldal"/>
     <meta name="keywords" content="HTML,CSS"/>
     <meta name="author" content=""/>
@@ -13,8 +13,8 @@
 		<a href="loginForm.php" ><input type="submit" style="font-size:13px;" value="Bejelentkezés" name="loginButton" class="buttonType"/></a>
 	</div>
 	<header>
-		<form action="index.html">
-		<a href="index.html"><img src="airplane.png" id="airplaneImg"/></a>
+		<form action="index.php">
+		<a href="index.php"><img src="airplane.png" id="airplaneImg"/></a>
 			<h1>Repülőjegy foglalás</h1>	
 			<h4>Találd meg a számodra megfelelő ajánlatot, a világ legszebb városaiba. Add meg keresési feltételeidet, és más böngészhetsz is a kedvező ajánlatok között!</h4>
 		</form>

@@ -41,7 +41,7 @@
 									}
 									echo '</option>';
 								}
-							?> 
+							?>
 						</select>
 			<p>Hova:</p><input type="text" name="to" required size="15" class="inputType" />
 			<p>Indulás dátuma</p><input type="date" name="startDate" required min="1900-01-01"/>	
