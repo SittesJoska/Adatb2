@@ -17,7 +17,7 @@ $tns = "
     )
   )";
   
-$conn = oci_connect('Jaki91', 'Vanginkel18', $tns,'UTF8') or die();
+$conn = oci_connect('SinterJóska', 'mk8h7a3', $tns,'UTF8') or die();
 //$conn = oci_connect('GÖBI', '', 'localhost/xe') ;
 
 /*
@@ -41,7 +41,7 @@ echo '<table border="0">';
 
 
 //// -- lekerdezzuk a tabla tartalmat
-$stid = oci_parse($conn, 'SELECT * FROM BIZTOSITO');
+$stid = oci_parse($conn, 'SELECT * FROM Menetrend');
 
 oci_execute($stid);
 
