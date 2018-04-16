@@ -68,6 +68,9 @@
 			<p>Indulás dátuma</p><input type="date" name="startDate" required min="1900-01-01" class="inputType"/>	
 			<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />	
 			<p>Gyerekek száma (kor: 0-14):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />
+			<p>Osztály:</p>
+			<input type="radio" name="seat" value="first" class="radioType" required>Elsőosztály</input>
+			<input type="radio" name="seat" value="second" class="radioType" >Másodosztály</input>
 			<p>Étkezés:</p><input type="radio" name="food" value="yes" class="radioType" required>Igen</input>
 						<input type="radio" name="food" value="no" class="radioType" >Nem</input>	
 			<br/><input type="submit" style="margin-top:10%;" value="Keresés" name="searchButton" class="buttonType"/>
