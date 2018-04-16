@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
   <head>
 	<meta charset="utf-8"/>
@@ -47,7 +47,7 @@
 								}
 							?>
 						</select>
-			<p>Honnan:</p><select name="honnan" class="inputType">
+			<p>Hova:</p><select name="honnan" class="inputType">
 							<option disabled selected value> Válasszon! </option>
 							<?php
 								include_once("connection.php");
