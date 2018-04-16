@@ -41,7 +41,7 @@ echo '<table border="0">';
 
 
 //// -- lekerdezzuk a tabla tartalmat
-$stid = oci_parse($conn, 'SELECT * FROM BIZTOSITO');
+$stid = oci_parse($conn, 'SELECT * FROM Menetrend');
 
 oci_execute($stid);
 

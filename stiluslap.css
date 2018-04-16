@@ -5,9 +5,19 @@ body {
 .div1{
 	width:95%;
 	margin:auto;
+	
 }
 
+.div3{
+	background: linear-gradient(to right,#eaf2ff, #8babb7);
+	color: #e5f7ff;
+	font-family:New Century;
+	font-weight:bold;
+	text-shadow:0px 1px 0px #045170;
+	font-size:16px;
+	text-align:center;
 
+}
 
 .buttonType {
 	box-shadow: 0px 1px 0px 0px #045170;	
