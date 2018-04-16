@@ -43,7 +43,7 @@
 								}
 							?>
 						</select>
-			<p>Honnan:</p><select name="honnan" class="inputType">
+			<p>Hova:</p><select name="honnan" class="inputType">
 							<option disabled selected value> Válasszon! </option>
 							<?php
 								include_once("connection.php");
