@@ -60,7 +60,71 @@
 					<td>500 €</td>
 					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
 					<td><input type="submit" style="font-size:11px;" value="Töröl" name="deleteButton" class="buttonType"/></td>
-
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>München</td>
+					<td>Párizs</td>
+					<td>2018.04.16 12:00</td>
+					<td>2018.04.16 15:00</td>
+					<td>0</td>
+					<td>3:00</td>
+					<td>4</td>
+					<td>1</td>
+					<td>1</td>
+					<td>Nem</td>
+					<td>500 €</td>
+					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
+					<td><input type="submit" style="font-size:11px;" value="Töröl" name="deleteButton" class="buttonType"/></td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>München</td>
+					<td>Párizs</td>
+					<td>2018.04.16 12:00</td>
+					<td>2018.04.16 15:00</td>
+					<td>0</td>
+					<td>3:00</td>
+					<td>4</td>
+					<td>1</td>
+					<td>1</td>
+					<td>Nem</td>
+					<td>500 €</td>
+					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
+					<td><input type="submit" style="font-size:11px;" value="Töröl" name="deleteButton" class="buttonType"/></td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>München</td>
+					<td>Párizs</td>
+					<td>2018.04.16 12:00</td>
+					<td>2018.04.16 15:00</td>
+					<td>0</td>
+					<td>3:00</td>
+					<td>4</td>
+					<td>1</td>
+					<td>1</td>
+					<td>Nem</td>
+					<td>500 €</td>
+					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
+					<td><input type="submit" style="font-size:11px;" value="Töröl" name="deleteButton" class="buttonType"/></td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>München</td>
+					<td>Párizs</td>
+					<td>2018.04.16 12:00</td>
+					<td>2018.04.16 15:00</td>
+					<td>0</td>
+					<td>3:00</td>
+					<td>4</td>
+					<td>1</td>
+					<td>1</td>
+					<td>Nem</td>
+					<td>500 €</td>
+					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
+					<td><input type="submit" style="font-size:11px;" value="Töröl" name="deleteButton" class="buttonType"/></td>
+				</tr>
 			</table>
 				
 		</div>

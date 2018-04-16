@@ -29,8 +29,8 @@
 	<div class="container1" style="margin-top:4%;">
 		<div class="search">
 			<p style="font-size:22px; margin-top:1%; padding-top:1%; font-weight: bold;">Járat keresése</p>
-			<p>Honnan:</p><select name="honnan">
-							<option disabled selected value> -- select an option -- </option>
+			<p>Honnan:</p><select name="honnan" class="inputType">
+							<option disabled selected value> Válasszon! </option>
 							<?php
 								include_once("connection.php");
 								$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'indul'";
@@ -47,9 +47,25 @@
 								}
 							?>
 						</select>
-			<p>Hova:</p><input type="text" name="to" required size="15" class="inputType" />
-			<p>Indulás dátuma</p><input type="date" name="startDate" required min="1900-01-01"/>	
-			<p>Érkezés dátuma</p><input type="date" name="arriveDate" required min="1900-01-01"/>
+			<p>Honnan:</p><select name="honnan" class="inputType">
+							<option disabled selected value> Válasszon! </option>
+							<?php
+								include_once("connection.php");
+								$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'érkezik'";
+								$stid = oci_parse($conn, $sql); 
+     
+								oci_execute($stid);
+
+								while ( $row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+									echo '<option>';
+									foreach ($row as $item) {
+										echo $item ;
+									}
+									echo '</option>';
+								}
+							?>
+						</select>
+			<p>Indulás dátuma</p><input type="date" name="startDate" required min="1900-01-01" class="inputType"/>	
 			<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />	
 			<p>Gyerekek száma (kor: 0-14):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />
 			<p>Étkezés:</p><input type="radio" name="food" value="yes" class="radioType" required>Igen</input>
