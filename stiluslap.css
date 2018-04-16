@@ -94,6 +94,18 @@ header h1{
 	font-family:New Century;
 	font-size:15px;
 }
+.container2{
+	display:inline;
+	
+	
+}
+.container2 p{
+	display:inline;
+	font-size:26px;
+	margin-left:5%;
+	color:#c40d00;
+	
+}
 .search{	
 	margin-top:4%;
 	width: 12%;
@@ -132,6 +144,7 @@ header h1{
 	overflow:scroll;	
 	height:550px;
 	overflow-X:hidden;
+	margin-bottom:3%;
 }
 	
 table{
