@@ -1,7 +1,7 @@
 <?php
 /* Set oracle user login and password info */
-$dbuser = "GÖBI";
-$dbpass = "123456";
+$dbuser = "Jaki91";
+$dbpass = "Vanginkel18";
 $dbname = "xe";
 
 $tns = "
