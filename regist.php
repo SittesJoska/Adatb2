@@ -62,7 +62,7 @@ function csatlakozas() {
     )
   )";
   
-$conn = oci_connect('Jaki91', 'Vanginkel18', $tns,'UTF8') or die();
+$conn = oci_connect('GÖBI', '123456', $tns,'UTF8') or die();
 	
 	return $conn;
 	

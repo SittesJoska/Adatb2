@@ -9,7 +9,16 @@
     <link rel="stylesheet" type="text/css" href="stiluslap.css" />   
   </head>
   <body>
+	<?php 
 		
+		session_start();
+		if(!isset($_SESSION['user'])){
+			include "menu.html";
+			echo '<div class="div3"><p>Nem vagy bejelentkezve...</p></div>';
+			header('Refresh: 2; URL = index.php');
+			die();
+		}
+	?>		
 	<header>
 		<form action="mainPage.php">
 		<a href="mainPage.php"><img src="airplane.png" id="airplaneImg"/></a>
@@ -23,8 +32,8 @@
 		<a href="reservationsPage.php" ><input type="submit" style="font-size:13px;" value="Foglalásaim" name="reservationsButton" class="buttonType"/></a>
 		<a href="userPage.php" ><input type="submit" style="font-size:13px;" value="Felhasználói adatok" name="userButton" class="buttonType"/></a>
 		
-		<input type="submit" style="font-size:13px; float:right" value="Kijelentkezés" name="logoutButton" class="buttonType"/>
-		<div style="margin-right:1%; margin-top:8px; float:right; color:#273e63; font-family:New Century; font-size:15px;">Felhasználónév</div>
+		<form method='GET' style='display:inline;' action='logout.php'><input type="submit" style="font-size:13px; float:right" value="Kijelentkezés" name="logoutButton" class="buttonType"/></form>
+		<div style="margin-right:1%; margin-top:8px; float:right; font-weight: 900; color:#99183f; font-family:New Century; font-size:15px;"><?php echo $_SESSION["user"]?></div>
 	</div>
 	<div class="loginDiv" style="margin-top:7%;">		
 	<form method="post" action="regist.php">	
@@ -37,7 +46,7 @@
 		<p>Egyenleg:</p><input readonly type="text" name="accountMoney" required="true" size="15" class="inputType" />
 		<br/>
 		<input type="submit" style="padding:2px; margin:2%;  width:100px;" value="Feltölt" name="upload" class="buttonType"/>
-		<p>E-mail cím:</p><input type="email" name="email" required="true" size="15"  maxlength="20" class="inputType" placeholder="valaki@valami.hu" />
+		<p>E-mail cím:</p><input type="email" name="email" required="true" size="15"  maxlength="40" class="inputType" placeholder="valaki@valami.hu" />
 		<p>Telefonszám:</p><input type="text" name="phoneNumber" required="true" size="15" placeholder="203411738" maxlength="9" class="inputType" />	
 		
 		<input type="submit" style="padding:10px; margin-top:15%;  width:230px;" value="Módosít" name="modify" class="buttonType"/>
