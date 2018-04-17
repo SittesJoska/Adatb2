@@ -21,8 +21,10 @@ oci_execute($login_stmt);
 $exists = oci_fetch_array($login_stmt);
 
 if($exists && !isset($_SESSION["user"]) ) {
-	session_start();
-	$_SESSION["user"] = $user;
+	
+	include 'refreshUserData.php';
+	
+	
 	echo '<div class="div3"><p>Sikeres bejelentkezés...</p></div>';
 	header('Refresh: 2; URL = mainPage.php');
 }
