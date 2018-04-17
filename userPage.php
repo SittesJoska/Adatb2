@@ -9,7 +9,16 @@
     <link rel="stylesheet" type="text/css" href="stiluslap.css" />   
   </head>
   <body>
+	<?php 
 		
+		session_start();
+		if(!isset($_SESSION['user'])){
+			include "menu.html";
+			echo '<div class="div3"><p>Nem vagy bejelentkezve...</p></div>';
+			header('Refresh: 2; URL = index.php');
+			die();
+		}
+	?>		
 	<header>
 		<form action="mainPage.php">
 		<a href="mainPage.php"><img src="airplane.png" id="airplaneImg"/></a>
@@ -23,25 +32,45 @@
 		<a href="reservationsPage.php" ><input type="submit" style="font-size:13px;" value="Foglalásaim" name="reservationsButton" class="buttonType"/></a>
 		<a href="userPage.php" ><input type="submit" style="font-size:13px;" value="Felhasználói adatok" name="userButton" class="buttonType"/></a>
 		
-		<input type="submit" style="font-size:13px; float:right" value="Kijelentkezés" name="logoutButton" class="buttonType"/>
-		<div style="margin-right:1%; margin-top:8px; float:right; color:#273e63; font-family:New Century; font-size:15px;">Felhasználónév</div>
+		<form method='GET' style='display:inline;' action='logout.php'><input type="submit" style="font-size:13px; float:right" value="Kijelentkezés" name="logoutButton" class="buttonType"/></form>
+		<div style="margin-right:1%; margin-top:8px; float:right; font-weight: 900; color:#99183f; font-family:New Century; font-size:15px;"><?php echo $_SESSION["user"]?></div>
 	</div>
 	<div class="loginDiv" style="margin-top:7%;">		
-	<form method="post" action="regist.php">	
-		<h2>Adatok</h2>
-		<p>Felhasználónév:</p><input readonly type="text" name="username" required="true" size="15" maxlength="30" class="inputType" />			
-		<p>Jelszó:</p> <input type="password" name="password" pattern=".{5,30}"  maxlength="30" required="true" size="15" class="inputType"/>	
-		<p>Jelszó megerősítése:</p> <input type="password" name="passwordConfirm"  maxlength="30" required="true" size="15" class="inputType"/>
-		<p>Név:</p><input readonly  type="text" name="name" required="true" size="15" maxlength="50" class="inputType" />		
-		<p>Bankszámlaszám:</p><input type="text" name="accountNumber" required="true" pattern=".{15,15}" maxlength="15" size="15" class="inputType" />
-		<p>Egyenleg:</p><input readonly type="text" name="accountMoney" required="true" size="15" class="inputType" />
-		<br/>
-		<input type="submit" style="padding:2px; margin:2%;  width:100px;" value="Feltölt" name="upload" class="buttonType"/>
-		<p>E-mail cím:</p><input type="email" name="email" required="true" size="15"  maxlength="20" class="inputType" placeholder="valaki@valami.hu" />
-		<p>Telefonszám:</p><input type="text" name="phoneNumber" required="true" size="15" placeholder="203411738" maxlength="9" class="inputType" />	
+
+		<?php
+			include_once 'connection.php';
+			
+			$username=$_SESSION['user'];
+			$password=$_SESSION['pass'];
+			$passwordConfirm=$_SESSION['pass'];
+			$fullName=$_SESSION['fullName'];
+			$accountNumber=$_SESSION['accountNumber'];
+			$accountMoney=$_SESSION['accountMoney'];
+			$email=$_SESSION['email'];
+			$phoneNumber=$_SESSION['phoneNumber'];
 		
-		<input type="submit" style="padding:10px; margin-top:15%;  width:230px;" value="Módosít" name="modify" class="buttonType"/>
-	</form>
+			
+		
+			echo '<h2>Adatok</h2>';
+			echo'<form method="POST" action="modifyUserData.php">';	
+			echo sprintf('<p>Felhasználónév:</p><input readonly type="text" value="%s" name="username" required="true" size="15" maxlength="30" class="inputType"/>',htmlspecialchars($username));			
+			echo sprintf('<p>Jelszó:</p> <input type="password" value="%s" name="password" pattern=".{5,30}"  maxlength="30" required="true" size="15" class="inputType"/>',htmlspecialchars($password));	
+			echo sprintf('<p>Jelszó megerősítése:</p> <input type="password" value="%s" name="passwordConfirm"  maxlength="30" required="true" size="15" class="inputType"/>',htmlspecialchars($passwordConfirm));			
+			echo sprintf('<p>Név:</p><input readonly  type="text" value="%s" name="name" required="true" size="15" maxlength="50" class="inputType" />', htmlspecialchars($fullName));
+			echo sprintf('<p>E-mail cím:</p><input type="email" value="%s" name="email" required="true" size="15"  maxlength="20" class="inputType" placeholder="valaki@valami.hu" />',htmlspecialchars($email));	
+			echo sprintf('<p>Telefonszám:</p><input type="text" value="%s" name="phoneNumber" required="true" size="15" placeholder="203411738" maxlength="9" class="inputType" />',htmlspecialchars($phoneNumber));				
+			echo'<input type="submit" style="padding:10px; margin-top:5%; margin-bottom:8%;  width:230px;" value="Módosít" name="modify" class="buttonType"/>';
+			echo '</form>';
+			
+			echo '<form method="POST" action="uploadMoney.php">';
+			echo sprintf('<p>Bankszámlaszám:</p><input type="text" value="%s" name="accountNumber" required="true" pattern=".{15,15}" maxlength="15" size="15" class="inputType" />',htmlspecialchars($accountNumber));	
+			echo sprintf('<p>Egyenleg:</p><input readonly type="text" value="%s" name="accountMoney" required="true" size="15" class="inputType" /><br/>',htmlspecialchars($accountMoney));				
+			echo'<input type="submit" style="padding:2px; margin:2%;  width:100px;" value="Feltölt" name="upload" class="buttonType"/>';	
+			echo '</form>';
+			
+			
+		?>
+	
 	
 				
 	</div>
