@@ -63,7 +63,7 @@
 								}
 							?>
 						</select>
-			<p>Indulás dátuma</p><input type="date" name="startDate" required min="1900-01-01" class="inputType"/>	
+			<p>Indulás dátuma</p><input type="date" name="startDate" required min="<?php echo date('Y-m-d');?>" class="inputType"/>	
 			<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />	
 			<p>Gyerekek száma (kor: 0-14):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />
 			<p>Osztály:</p>
