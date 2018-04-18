@@ -114,7 +114,8 @@
 							$day = getMenetrend($startDate);
 					}
 										
-					$sql = "SELECT MENETREND.Menetrend_id FROM KOZLEKEDIK INNER JOIN MENETREND ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' AND KOZLEKEDIK.VAROS_NEV = '".$honnan."' AND KOZLEKEDIK.INDUL_ERKEZIK = 'indul'";
+					$sql = "SELECT MENETREND.Menetrend_id FROM KOZLEKEDIK INNER JOIN MENETREND ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' 
+					AND KOZLEKEDIK.VAROS_NEV = '".$honnan."' AND KOZLEKEDIK.INDUL_ERKEZIK = 'indul'";
 					
 					$stmt = oci_parse($conn, $sql);
 					
@@ -173,7 +174,78 @@
 							<?php
 						}
 						echo '</tr>';
-					}					
+					}
+					
+					$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE VAROS_NEV = '".$hova."' AND INDUL_ERKEZIK = 'indul'";
+					
+					$stmt2 = oci_parse($conn, $sql2);
+					
+					oci_execute($stmt2);
+					
+					while($row = oci_fetch_array($stmt2, OCI_ASSOC + OCI_RETURN_NULLS)) {
+						foreach ($row as $item) {
+							$sql3 = "SELECT MENETREND.Menetrend_id FROM MENETREND INNER JOIN KOZLEKEDIK ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE KOZLEKEDIK.VAROS_NEV = '".$item."' AND KOZLEKEDIK.INDUL_ERKEZIK = 'indul'";
+							
+							$stmt3 = oci_parse($conn, $sql3);
+							
+							oci_execute($stmt3);
+							
+							while($row2 = oci_fetch_array($stmt3, OCI_ASSOC + OCI_RETURN_NULLS)) {
+								echo '<tr>';
+								foreach ($row2 as $item2) {
+									$sql4 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item2."' AND INDUL_ERKEZIK = 'indul' AND VAROS_NEV = '".$honnan."'";
+									$stmt4 = oci_parse($conn, $sql4);
+									oci_execute($stmt4);
+									$varos3 = oci_fetch_row($stmt4);
+									
+									$sql5 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item2."' AND INDUL_ERKEZIK = 'érkezik' AND VAROS_NEV = '".$hova."'";
+									$stmt5 = oci_parse($conn, $sql5);
+									oci_execute($stmt5);
+									$varos4 = oci_fetch_row($stmt5);
+									
+									$oraSql2 = "SELECT ORA, PERC FROM MENETREND WHERE Menetrend_id = '".$item2."' AND NAP = '".$day."'";
+									$oraStmt2 = oci_parse($conn, $oraSql2);
+									oci_execute($oraStmt2);
+									$ido = oci_fetch_row($oraStmt2);
+									
+									$menetidoSql2 = "SELECT Menetido FROM UTAZASIDOTARTAM WHERE TAV = (SELECT TAV FROM MENETREND WHERE Menetrend_id = '".$item."')";
+									$menetStmt2 = oci_parse($conn, $menetidoSql2);
+									oci_execute($menetStmt2);
+									$idotartam2 = oci_fetch_row($menetStmt2);
+									$ora2 = floor($idotartam[0]/60);
+									$perc2 = $idotartam[0]%60;
+																
+									$erkezesOra2 = $ido[0] + $ora;
+									$erkezesPerc2 = $ido[1] + $perc;
+									
+									if($erkezesPerc >= 60) {
+										$erkezesOra += floor($erkezesPerc/60);
+										$erkezesPerc = $erkezesPerc%60;
+									}
+									
+									$erkezesNap = $startDate;
+									
+									if($erkezesOra >= 24) {
+										$erkezesNap = $startDate + '1 day';
+										$erkezesOra -= 24;
+									}
+
+									$ar = 80000;
+									
+									if($ido[1] == 0) {
+										$ido[1] = '00';
+									}
+									
+									echo '<td>' . $varos[0] . '</td><td>' . $varos2[0] . '</td><td>' . $startDate . ' ' . $ido[0] . ':' . $ido[1] . '</td>
+									<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td> 0 </td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
+									?>
+										<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
+									<?php
+								}
+									echo '</tr>';
+							}
+						}
+					}						
 					
 				
 				?>
