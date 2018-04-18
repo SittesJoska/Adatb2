@@ -193,51 +193,64 @@
 							while($row2 = oci_fetch_array($stmt3, OCI_ASSOC + OCI_RETURN_NULLS)) {
 								echo '<tr>';
 								foreach ($row2 as $item2) {
-									$sql4 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item2."' AND INDUL_ERKEZIK = 'indul' AND VAROS_NEV = '".$honnan."'";
+									$sql4 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item2."' AND INDUL_ERKEZIK = 'indul' AND VAROS_NEV = '".$item."'";
 									$stmt4 = oci_parse($conn, $sql4);
 									oci_execute($stmt4);
 									$varos3 = oci_fetch_row($stmt4);
 									
-									$sql5 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item2."' AND INDUL_ERKEZIK = 'érkezik' AND VAROS_NEV = '".$hova."'";
+									$sql5 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item2."' AND INDUL_ERKEZIK = 'érkezik'";
 									$stmt5 = oci_parse($conn, $sql5);
 									oci_execute($stmt5);
 									$varos4 = oci_fetch_row($stmt5);
 									
-									$oraSql2 = "SELECT ORA, PERC FROM MENETREND WHERE Menetrend_id = '".$item2."' AND NAP = '".$day."'";
+									$oraSql2 = "SELECT ORA, PERC FROM MENETREND WHERE Menetrend_id = '".$item2."'";
 									$oraStmt2 = oci_parse($conn, $oraSql2);
 									oci_execute($oraStmt2);
-									$ido = oci_fetch_row($oraStmt2);
+									$ido2 = oci_fetch_row($oraStmt2);
 									
-									$menetidoSql2 = "SELECT Menetido FROM UTAZASIDOTARTAM WHERE TAV = (SELECT TAV FROM MENETREND WHERE Menetrend_id = '".$item."')";
+									$menetidoSql2 = "SELECT Menetido FROM UTAZASIDOTARTAM WHERE TAV = (SELECT TAV FROM MENETREND WHERE Menetrend_id = '".$item2."')";
 									$menetStmt2 = oci_parse($conn, $menetidoSql2);
 									oci_execute($menetStmt2);
 									$idotartam2 = oci_fetch_row($menetStmt2);
-									$ora2 = floor($idotartam[0]/60);
-									$perc2 = $idotartam[0]%60;
+									$ora2 = floor($idotartam2[0]/60);
+									$perc2 = $idotartam2[0]%60;
 																
-									$erkezesOra2 = $ido[0] + $ora;
-									$erkezesPerc2 = $ido[1] + $perc;
+									$erkezesOra2 = $ido2[0] + $ora2;
+									$erkezesPerc2 = $ido2[1] + $perc2;
 									
-									if($erkezesPerc >= 60) {
-										$erkezesOra += floor($erkezesPerc/60);
-										$erkezesPerc = $erkezesPerc%60;
+									if($erkezesPerc2 >= 60) {
+										$erkezesOra2 += floor($erkezesPerc2/60);
+										$erkezesPerc2 = $erkezesPerc2%60;
 									}
 									
-									$erkezesNap = $startDate;
+									$erkezesNap2 = $startDate;
 									
-									if($erkezesOra >= 24) {
-										$erkezesNap = $startDate + '1 day';
-										$erkezesOra -= 24;
+									$sql6 = "SELECT NAP FROM MENETREND WHERE Menetrend_id = '".$item."'";
+									$stmt6 = oci_parse($conn, $sql6);
+									oci_execute($stmt6);
+									$atszallasnap = oci_fetch_row($stmt6);
+									
+									while(true) {
+										
+										if($atszallasnap[0] = getMenetrend($erkezesNap2)) {
+											break;
+										}
+										$erkezesNap2 = date('Y-m-d', strtotime($erkezesNap2 . ' +1 day'));
+									}
+																		
+									if($erkezesOra2 >= 24) {
+										$erkezesNap2 = date('Y-m-d', strtotime($erkezesNap2 . ' +1 day'));
+										$erkezesOra2 -= 24;
 									}
 
-									$ar = 80000;
+									$ar2 = 80000;
 									
-									if($ido[1] == 0) {
-										$ido[1] = '00';
+									if($ido2[1] == 0) {
+										$ido2[1] = '00';
 									}
 									
-									echo '<td>' . $varos[0] . '</td><td>' . $varos2[0] . '</td><td>' . $startDate . ' ' . $ido[0] . ':' . $ido[1] . '</td>
-									<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td> 0 </td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
+									echo '<td>' . $varos3[0] . '</td><td>' . $varos4[0] . '</td><td>' . $startDate . ' ' . $ido2[0] . ':' . $ido2[1] . '</td>
+									<td>' . $erkezesNap2 . ' ' . $erkezesOra2 . ':' . $erkezesPerc2 . '</td><td> 0 </td><td> Óra: ' . $ora2 . ' Perc: ' . $perc2 . '</td><td>' . $ar2 . '</td>';
 									?>
 										<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
 									<?php
