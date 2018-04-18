@@ -63,7 +63,7 @@
 			echo '</form>';
 			
 			echo '<form method="POST" action="uploadMoney.php">';
-			echo sprintf('<p>Bankszámlaszám:</p><input type="text" value="%s" name="accountNumber" required="true" pattern=".{15,15}" maxlength="15" size="15" class="inputType" />',htmlspecialchars($accountNumber));	
+			echo sprintf('<p>Bankszámlaszám:</p><input type="text" readonly value="%s" name="accountNumber" required="true" pattern=".{15,15}" maxlength="15" size="15" class="inputType" />',htmlspecialchars($accountNumber));	
 			echo sprintf('<p>Egyenleg:</p><input readonly type="text" value="%s" name="accountMoney" required="true" size="15" class="inputType" /><br/>',htmlspecialchars($accountMoney));				
 			echo'<input type="submit" style="padding:2px; margin:2%;  width:100px;" value="Feltölt" name="upload" class="buttonType"/>';	
 			echo '</form>';
@@ -73,13 +73,6 @@
 	
 	
 				
-	</div>
-	
-
-	
-	
-	
-  
-  
+	</div>  
   </body>
 </html>

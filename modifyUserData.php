@@ -2,53 +2,67 @@
 include_once 'connection.php';
 include "menu.html";
 
-$user = $_POST['username'];
-$pass1 = $_POST['password'];
-$pass2 = $_POST['passwordConfirm'];
-$name = $_POST['name'];
-$bank = $_POST['accountNumber'];
-$email = $_POST['email'];
-$telo = $_POST['phoneNumber'];
+$user=$_POST['username'];
+$newPassword=$_POST['password'];
+$newPasswordConfirm=$_POST['passwordConfirm'];
+$newEmail=$_POST['email'];
+$newPhoneNumber=$_POST['phoneNumber'];
 
-$sql_regist = "INSERT INTO SZEMELY VALUES('$user','$pass1','$name','$telo','$email','$bank')";   
-
-$regist_stmt = oci_parse($conn, $sql_regist);
-
-if(!$regist_stmt)
-{
-    echo "An error occurred in parsing the sql string.\n"; 
-    exit; 
+if($newPassword!=$newPasswordConfirm){
+	echo '<div class="div3"><p>A két jelszó nem egyezik meg...</p></div>';
+	header('Refresh: 2; URL = userPage.php');
 }
+$sql_updatePassword = "UPDATE SZEMELY SET JELSZO='$newPassword' WHERE FELHASZNALONEV='$user'";   
+$sql_updateEmail = "UPDATE SZEMELY SET EMAIL_CIM='$newEmail' WHERE FELHASZNALONEV='$user'";  
+$sql_updatePhoneNumber = "UPDATE SZEMELY SET TELEFONSZAM='$newPhoneNumber' WHERE FELHASZNALONEV='$user'";  
 
-if($pass1!=$pass2) {
-	echo '<div class="div3"><p>A két jelszó nem egyezik!</p><a href="registForm.php"><input type="submit" value="Vissza" name="goBack" class="buttonType"/></a></div>';
-	}else if(!letezo_felhasznalo($user)){				
-				oci_execute($regist_stmt);
-				echo '<div class="div3"><p>Sikeres regisztráció, jelentkezz be!</p><a href="loginForm.php"><input type="submit" value="Bejelentkezés" name="goMainPage" class="buttonType"/></a></div>';
-	}
-	else {
-	echo '<div class="div3"><p>Már van ilyen nevű felhasználó!</p><a href="registForm.php"><input type="submit" value="Vissza" name="goBack" class="buttonType"/></a></div>';
+$updatePassword_stmt = oci_parse($conn, $sql_updatePassword);
+$updateEmail_stmt = oci_parse($conn, $sql_updateEmail);
+$updatePhoneNumber_stmt = oci_parse($conn, $sql_updatePhoneNumber);
 
-}
-
-function letezo_felhasznalo($user){
 	
-	if ( !($conn = csatlakozas()) ) { // ha nem sikerult csatlakozni, akkor kilepunk
-		return false;
-	}
-		
-	$userek = oci_parse($conn, 'SELECT FELHASZNALONEV FROM SZEMELY');
-	oci_execute($userek);
+oci_execute($updateEmail_stmt);
+oci_execute($updatePassword_stmt);
+oci_execute($updatePhoneNumber_stmt);
+
+session_start();
+$user=$_SESSION["user"];
 	
-	while ( $row = oci_fetch_array($userek, OCI_ASSOC + OCI_RETURN_NULLS)) {
+	
+	$sql_password="SELECT JELSZO FROM SZEMELY WHERE FELHASZNALONEV = '$user'"; 
+	$password_stmt=oci_parse($conn, $sql_password);
+	oci_execute($password_stmt);
+	while ( $row = oci_fetch_array($password_stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
 		foreach ($row as $item) {
-			if($item==$user) {
-				return true;
-			} 
+			$password= $item;
 		}	
 	}
-	return false;
-}
+	$_SESSION['pass']=$password;
+	
+	$sql_email="SELECT EMAIL_CIM FROM SZEMELY WHERE FELHASZNALONEV = '$user'"; 
+	$email_stmt=oci_parse($conn, $sql_email);
+	oci_execute($email_stmt);
+	while ( $row = oci_fetch_array($email_stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+		foreach ($row as $item) {
+			$email= $item;
+		}	
+	}
+	$_SESSION['email']=$email;
+	
+	$sql_phoneNumber="SELECT TELEFONSZAM FROM SZEMELY WHERE FELHASZNALONEV = '$user'"; 
+	$phoneNumber_stmt=oci_parse($conn, $sql_phoneNumber);
+	oci_execute($phoneNumber_stmt);
+	while ( $row = oci_fetch_array($phoneNumber_stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+		foreach ($row as $item) {
+			$phoneNumber= $item;
+		}	
+	}
+	$_SESSION['phoneNumber']=$phoneNumber;
+		
+	
+	header('Refresh: 0; URL = userPage.php');
+	die();
+	
 
 function csatlakozas() {
 	

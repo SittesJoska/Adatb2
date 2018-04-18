@@ -30,7 +30,7 @@ oci_execute($upload_stmt);
 	}
 	$_SESSION['accountMoney']=$accountMoney;
 	header('Refresh: 0; URL = userPage.php');
-			die();
+	die();
 	
 
 function csatlakozas() {
