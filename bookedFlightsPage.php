@@ -42,7 +42,7 @@
 			
 			<input type="submit" style="font-size:13px; float:right; margin-top:1%; margin-left:5px;" value="Vissza" name="goBackButton" class="buttonType"/>
 			<input type="submit" style="font-size:13px; float:right; margin-top:1%; margin-left:5px;" value="Töröl" name="deleteReservationButton" class="buttonType"/>
-			<input type="submit" style="font-size:13px; float:right; margin-top:1%; margin-left:5px;" value="Szállodák" name="hotelsButton" class="buttonType"/>
+			<form action="hotelsLoggedIn.php" method="POST"><input type="submit" style="font-size:13px; float:right; margin-top:1%; margin-left:5px;" value="Szállodák" name="hotelsButton" class="buttonType"/></form>
 			<p style="font-size:28px; margin-top:2%; text-align:center; padding-top:1%; font-weight: bold;">Választott foglalás</p>
 			<table>
 				<tr>
