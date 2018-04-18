@@ -9,7 +9,11 @@
     <link rel="stylesheet" type="text/css" href="stiluslap.css" />   
   </head>
   <body>
+		<?php
+			include_once 'queries.php';
 		
+			$conn = connect();
+		?>
 	<div class="div1">
 		<a href="loginForm.php" ><input type="submit" style="font-size:13px;" value="Bejelentkezés" name="loginButton" class="buttonType"/></a>
 		<a href="registForm.php" ><input type="submit" style="font-size:13px;" value="Regisztráció" name="registButton" class="buttonType"/></a>

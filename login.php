@@ -1,7 +1,9 @@
 <?php
 
-include_once 'connection.php';
+include_once "queries.php";
 include "menu.html";
+
+$conn = connect();
 
 $user = $_POST['user'];
 $pass = $_POST['pass'];

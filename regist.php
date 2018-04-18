@@ -1,6 +1,8 @@
 <?php
-include_once 'connection.php';
+include_once 'queries.php';
 include "menu.html";
+
+$conn = connect();
 
 $user = $_POST['username'];
 $pass1 = $_POST['password'];
@@ -45,7 +47,7 @@ if($pass1!=$pass2) {
 
 function letezo_felhasznalo($user){
 	
-	if ( !($conn = csatlakozas()) ) { // ha nem sikerult csatlakozni, akkor kilepunk
+	if ( !($conn = connect()) ) { // ha nem sikerult csatlakozni, akkor kilepunk
 		return false;
 	}
 		
@@ -63,7 +65,7 @@ function letezo_felhasznalo($user){
 }
 function letezo_bankszamla($bank){
 	
-	if ( !($conn = csatlakozas()) ) { // ha nem sikerult csatlakozni, akkor kilepunk
+	if ( !($conn = connect()) ) { // ha nem sikerult csatlakozni, akkor kilepunk
 		return false;
 	}
 		
@@ -79,24 +81,5 @@ function letezo_bankszamla($bank){
 	}
 	return false;
 }
-
-function csatlakozas() {
-	
-	$tns = "
-(DESCRIPTION =
-    (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
-    )
-    (CONNECT_DATA =
-      (SID = xe)
-    )
-  )";
-  
-$conn = oci_connect('GÖBI', '123456', $tns,'UTF8') or die();
-	
-	return $conn;
-	
-}
-
 
 ?>

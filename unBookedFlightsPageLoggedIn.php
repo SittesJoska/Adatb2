@@ -10,6 +10,9 @@
   </head>
   <body>
 	<?php 
+		include_once 'queries.php';
+		
+		$conn = connect();
 		
 		session_start();
 		if(!isset($_SESSION['user'])){

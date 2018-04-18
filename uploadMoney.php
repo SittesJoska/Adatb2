@@ -1,7 +1,8 @@
 <?php
-include_once 'connection.php';
+include_once 'queries.php';
 include "menu.html";
 
+$conn = connect();
 
 $accountNumber = $_POST['accountNumber'];
 $accountMoney = $_POST['accountMoney'];
@@ -31,25 +32,5 @@ oci_execute($upload_stmt);
 	$_SESSION['accountMoney']=$accountMoney;
 	header('Refresh: 0; URL = userPage.php');
 	die();
-	
-
-function csatlakozas() {
-	
-	$tns = "
-(DESCRIPTION =
-    (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
-    )
-    (CONNECT_DATA =
-      (SID = xe)
-    )
-  )";
-  
-$conn = oci_connect('GÖBI', '123456', $tns,'UTF8') or die();
-	
-	return $conn;
-	
-}
-
 
 ?>

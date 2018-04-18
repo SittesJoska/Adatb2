@@ -10,6 +10,9 @@
   </head>
   <body>
 	<?php 
+		include_once 'queries.php';
+		
+		$conn = connect();
 		
 		session_start();
 		if(!isset($_SESSION['user'])){
@@ -37,9 +40,7 @@
 	</div>
 	<div class="loginDiv" style="margin-top:7%;">		
 
-		<?php
-			include_once 'connection.php';
-			
+		<?php			
 			$username=$_SESSION['user'];
 			$password=$_SESSION['pass'];
 			$passwordConfirm=$_SESSION['pass'];
@@ -48,8 +49,6 @@
 			$accountMoney=$_SESSION['accountMoney'];
 			$email=$_SESSION['email'];
 			$phoneNumber=$_SESSION['phoneNumber'];
-		
-			
 		
 			echo '<h2>Adatok</h2>';
 			echo'<form method="POST" action="modifyUserData.php">';	

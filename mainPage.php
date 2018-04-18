@@ -10,7 +10,8 @@
   </head>
   <body>
 	<?php 
-		
+		include_once("queries.php");
+		$conn = connect();
 		session_start();
 		if(!isset($_SESSION['user'])){
 			include "menu.html";
@@ -35,55 +36,55 @@
 		<form method='GET' style='display:inline;' action='logout.php'><input type="submit" style="font-size:13px; float:right" value="Kijelentkezés" name="logoutButton" class="buttonType"/></form>
 		<div style="margin-right:1%; margin-top:8px; float:right; font-weight: 900; color:#99183f; font-family:New Century; font-size:15px;"><?php echo $_SESSION["user"]?></div>
 	</div>
-	<div class="container1" style="margin-top:4%;">
-		<div class="search">
-			<p style="font-size:22px; margin-top:1%; padding-top:1%; font-weight: bold;">Járat keresése</p>
-			<p>Honnan:</p><select name="honnan" class="inputType">
-							<option disabled selected value> Válasszon! </option>
-							<?php
-								include_once("connection.php");
-								$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'indul'";
-								$stid = oci_parse($conn, $sql); 
-     
-								oci_execute($stid);
+	<form method="POST">
+		<div class="container1" style="margin-top:4%;">
+			<div class="search">
+				<p style="font-size:22px; margin-top:1%; padding-top:1%; font-weight: bold;">Járat keresése</p>
+				<p>Honnan:</p><select name="honnan" class="inputType">
+								<option disabled selected value> Válasszon! </option>
+								<?php
+									$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'indul'";
+									$stid = oci_parse($conn, $sql); 
+		 
+									oci_execute($stid);
 
-								while ( $row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
-									echo '<option>';
-									foreach ($row as $item) {
-										echo $item ;
+									while ( $row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+										echo '<option>';
+										foreach ($row as $item) {
+											echo $item ;
+										}
+										echo '</option>';
 									}
-									echo '</option>';
-								}
-							?>
-						</select>
-			<p>Hova:</p><select name="honnan" class="inputType">
-							<option disabled selected value> Válasszon! </option>
-							<?php
-								include_once("connection.php");
-								$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'érkezik'";
-								$stid = oci_parse($conn, $sql); 
-     
-								oci_execute($stid);
+								?>
+							</select>
+				<p>Hova:</p><select name="hova" class="inputType">
+								<option disabled selected value> Válasszon! </option>
+								<?php
+									$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'érkezik'";
+									$stid = oci_parse($conn, $sql); 
+		 
+									oci_execute($stid);
 
-								while ( $row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
-									echo '<option>';
-									foreach ($row as $item) {
-										echo $item ;
+									while ( $row = oci_fetch_array($stid, OCI_ASSOC + OCI_RETURN_NULLS)) {
+										echo '<option>';
+										foreach ($row as $item) {
+											echo $item ;
+										}
+										echo '</option>';
 									}
-									echo '</option>';
-								}
-							?>
-						</select>
-			<p>Indulás dátuma</p><input type="date" name="startDate" required min="1900-01-01" class="inputType"/>	
-			<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />	
-			<p>Gyerekek száma (kor: 0-14):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />
-			<p>Osztály:</p>
-			<input type="radio" name="seat" value="first" class="radioType" required>Elsőosztály</input>
-			<input type="radio" name="seat" value="second" class="radioType" >Másodosztály</input>
-			<p>Étkezés:</p><input type="radio" name="food" value="yes" class="radioType" required>Igen</input>
-						<input type="radio" name="food" value="no" class="radioType" >Nem</input>	
-			<br/><input type="submit" style="margin-top:10%;" value="Keresés" name="searchButton" class="buttonType"/>
-		</div>
+								?>
+							</select>
+				<p>Indulás dátuma</p><input type="date" name="startDate" required min="1900-01-01" class="inputType"/>	
+				<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />	
+				<p>Gyerekek száma (kor: 0-14):</p><input type="text" name="numberOfChildren" required size="2" class="inputType" />
+				<p>Osztály:</p>
+				<input type="radio" name="seat" value="first" class="radioType" required>Elsőosztály</input>
+				<input type="radio" name="seat" value="second" class="radioType" >Másodosztály</input>
+				<p>Étkezés:</p><input type="radio" name="food" value="yes" class="radioType" required>Igen</input>
+							<input type="radio" name="food" value="no" class="radioType" >Nem</input>	
+				<br/><input type="submit" style="margin-top:10%;" value="Keresés" name="searchButton" class="buttonType"/>
+			</div>
+		</form>
 		<div class="result">
 			<p style="font-size:28px; margin-top:1%; text-align:center; padding-top:1%; font-weight: bold;">Találatok</p>
 			<table>
@@ -97,138 +98,84 @@
 					<th>Ár</th>
 					<th/>
 				</tr>
-				<tr>
+				<?php
+					$day = null;
+					$honnan = null;
+				
+					if(ISSET($_POST["searchButton"])) {
+							$honnan = $_POST["honnan"];
+							$hova = $_POST["hova"];
+							$startDate = $_POST["startDate"];
+							$felnott = $_POST["numberOfAdults"];
+							$gyerek = $_POST["numberOfChildren"];
+							$etkezes = $_POST["food"];
+							
+							$day = getMenetrend($startDate);
+					}
+										
+					$sql = "SELECT MENETREND.Menetrend_id FROM KOZLEKEDIK INNER JOIN MENETREND ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' AND KOZLEKEDIK.VAROS_NEV = '".$honnan."' AND KOZLEKEDIK.INDUL_ERKEZIK = 'indul'";
 					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
+					$stmt = oci_parse($conn, $sql);
 					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
+					oci_execute($stmt);
 					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
+					while($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+						echo '<tr>';
+						foreach ($row as $item) {
+							$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item."' AND INDUL_ERKEZIK = 'indul' AND VAROS_NEV = '".$honnan."'";
+							$stmt2 = oci_parse($conn, $sql2);
+							oci_execute($stmt2);
+							$varos = oci_fetch_row($stmt2);
+							
+							$sql3 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item."' AND INDUL_ERKEZIK = 'érkezik' AND VAROS_NEV = '".$hova."'";
+							$stmt3 = oci_parse($conn, $sql3);
+							oci_execute($stmt3);
+							$varos2 = oci_fetch_row($stmt3);
+							
+							$oraSql = "SELECT ORA, PERC FROM MENETREND WHERE Menetrend_id = '".$item."' AND NAP = '".$day."'";
+							$oraStmt = oci_parse($conn, $oraSql);
+							oci_execute($oraStmt);
+							$ido = oci_fetch_row($oraStmt);
+							
+							$menetidoSql = "SELECT Menetido FROM UTAZASIDOTARTAM WHERE TAV = (SELECT TAV FROM MENETREND WHERE Menetrend_id = '".$item."')";
+							$menetStmt = oci_parse($conn, $menetidoSql);
+							oci_execute($menetStmt);
+							$idotartam = oci_fetch_row($menetStmt);
+							$ora = floor($idotartam[0]/60);
+							$perc = $idotartam[0]%60;
+														
+							$erkezesOra = $ido[0] + $ora;
+							$erkezesPerc = $ido[1] + $perc;
+							
+							if($erkezesPerc >= 60) {
+								$erkezesOra += floor($erkezesPerc/60);
+								$erkezesPerc = $erkezesPerc%60;
+							}
+							
+							$erkezesNap = $startDate;
+							
+							if($erkezesOra >= 24) {
+								$erkezesNap = $startDate + '1 day';
+								$erkezesOra -= 24;
+							}
+
+							$ar = 80000;
+							
+							if($ido[1] == 0) {
+								$ido[1] = '00';
+							}
+							
+							echo '<td>' . $varos[0] . '</td><td>' . $varos2[0] . '</td><td>' . $startDate . ' ' . $ido[0] . ':' . $ido[1] . '</td>
+							<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td> 0 </td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
+							?>
+								<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
+							<?php
+						}
+						echo '</tr>';
+					}					
 					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
-					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
-					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
-					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
-					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
-					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
-					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
-					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
-				<tr>
-					
-					<td>Budapest</td>
-					<td>Szingapúr</td>
-					<td>2018.04.15. 13:00</td>
-					<td>2018.04.16. 18:00</td>
-					<td>1</td>
-					<td>18:40</td>
-					<td>150 €</td>
-					<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-				</tr>
+				
+				?>
 
 			</table>
 				

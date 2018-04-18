@@ -1,6 +1,7 @@
 <?php
-	include_once 'connection.php';
+	include_once 'queries.php';
 
+	$conn = connect();
 	
 	$sql_fullName="SELECT NEV FROM SZEMELY WHERE FELHASZNALONEV = '$user'"; 
 	$sql_accountNumber="SELECT BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '$user'"; 
