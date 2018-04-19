@@ -96,7 +96,7 @@
 							$startDate = $_POST["startDate"];
 							$felnott = $_POST["numberOfAdults"];
 							$gyerek = $_POST["numberOfChildren"];
-							$seat = $:POST["seat"];
+							$seat = $_POST["seat"];
 							$etkezes = $_POST["food"];
 							
 							$day = getMenetrend($startDate);
