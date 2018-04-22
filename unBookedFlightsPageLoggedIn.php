@@ -12,6 +12,14 @@
 	<?php 
 		session_start();
 		if($_SERVER['REQUEST_METHOD'] == "POST"){
+			$referer = $_SERVER['HTTP_REFERER'];
+			$myarray = preg_split("[/]",$referer);
+			$lastEl = array_values(array_slice($myarray, -1))[0];
+			if(strcmp($lastEl, 'mainPage.php') == 0) {
+				unset($_SESSION['biztosito_neve']);
+				unset($_SESSION['biztosito_kategoria']);
+			}
+
 		}else{
 			unset($_SESSION['biztosito_neve']);
 			unset($_SESSION['biztosito_kategoria']);
