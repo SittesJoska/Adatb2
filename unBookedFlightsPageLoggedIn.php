@@ -10,16 +10,45 @@
   </head>
   <body>
 	<?php 
+		session_start();
+
 		include_once 'queries.php';
 		
 		$conn = connect();
 		
-		session_start();
+		$honnan = $_SESSION["honnan"];
+		$hova = $_SESSION["hova"];
+		$startDate = $_SESSION["startDate"];
+		$indulasOra = $_SESSION["indulasOra"];
+		$indulasPerc = $_SESSION["indulasPerc"];
+		$erkezesNap = $_SESSION["erkezesNap"];
+		$erkezesOra = $_SESSION["erkezesOra"];
+		$erkezesPerc = $_SESSION["erkezesPerc"];
+		
+		$felnott = $_SESSION["felnottSzam"];
+		$gyerek = $_SESSION["gyerekSzam"];
+		$osztaly = $_SESSION["osztaly"];
+		$etkezes = $_SESSION["etkezes"];
+		$atszallas = $_SESSION["atszallas"];
+		
+		$biztosito = $_SESSION["biztositoNev"];
+		$legitarsasag = $_SESSION["legitarsasagNev"];
+		$repuloTipus = $_SESSION["repulo_tipus"];
+
+		$ar = $_SESSION["ar"];
+		
+		$selectedBiztosito = null;
+		
 		if(!isset($_SESSION['user'])){
 			include "menu.html";
 			echo '<div class="div3"><p>Nem vagy bejelentkezve...</p></div>';
 			header('Refresh: 2; URL = index.php');
 			die();
+		}
+		
+		if(isset($_POST['biztosito_neve'])) {
+			echo "kivalasztva";
+			$selectedBiztosito = $_POST["biztosito_neve"];
 		}
 	?>		
 	<header>
@@ -48,7 +77,6 @@
 			<p style="font-size:28px; margin-top:3%; text-align:center; padding-top:1%; font-weight: bold;">Választott foglalás</p>
 			<table>
 				<tr>
-					<th>Azonosító</th>
 					<th>Honnan</th>
 					<th>Hova</th>
 					<th>Indulás</th>
@@ -58,6 +86,60 @@
 					<th>Biztosító neve</th>	
 					<th>Biztosítási kategória</th>
 					<th>Kárpótlás</th>						
+				</tr>
+				<tr>
+					<td><?php echo $honnan; ?></td>
+					<td><?php echo $hova; ?></td>
+					<td><?php echo $startDate . ' ' . $indulasOra . ':' . $indulasPerc; ?></td>
+					<td><?php echo $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc; ?></td>
+					<td><?php echo $legitarsasag; ?></td>
+					<td><?php echo $repuloTipus; ?></td>
+					<td><form method="POST"><select name="biztosito_neve" class="inputType">
+								<option disabled selected value> Válasszon! </option>
+								<?php
+									$biztosito = "SELECT NEV FROM BIZTOSITO WHERE LEGITARSASAG_NEV = '".$legitarsasag."'";
+									$stmtBiztosito = oci_parse($conn, $biztosito);
+									oci_execute($stmtBiztosito);
+												
+									while ( $row = oci_fetch_array($stmtBiztosito, OCI_ASSOC + OCI_RETURN_NULLS)) {
+										echo '<option>';
+										foreach ($row as $item) {
+											echo $item ;
+										}
+										echo '</option>';
+									}
+								?>
+							</select></form></td>
+					<td><form method="POST" action="unBookedFlightsPageLoggedIn.php"><select name="biztosito_kategoria" class="inputType">
+								<option disabled selected value> Válasszon! </option>
+								<?php
+
+									$kategoriaSql = "SELECT KATEGORIA FROM BIZTOSITO WHERE NEV = 'Groupama' AND LEGITARSASAG_NEV = '".$legitarsasag."'";
+									$stmtKategoria = oci_parse($conn, $kategoriaSql);
+									oci_execute($stmtKategoria);
+												
+									while ( $row = oci_fetch_array($stmtKategoria, OCI_ASSOC + OCI_RETURN_NULLS)) {
+										echo '<option>';
+										foreach ($row as $item) {
+											echo $item ;
+										}
+										echo '</option>';
+									}
+								?>
+							</select></form></td>
+					<td><?php
+						$selectedKategoria = $_POST["biztosito_kategoria"];
+						$selectedBiztosito = $_POST["biztosito_neve"];
+
+						$karpotlasSql = "SELECT KARPOTLAS FROM BIZTOSITO WHERE NEV = '".$selectedBiztosito."' AND KATEGORIA = '".$selectedKategoria."'";
+						$karpotlasStmt = oci_parse($conn, $karpotlasSql);
+						oci_execute($karpotlasStmt);
+						$kategoria = oci_fetch_row($karpotlasStmt);
+						
+						echo $kategoria[0];
+					?></td>
+
+
 				</tr>
 				
 				
