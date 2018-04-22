@@ -11,6 +11,11 @@
   <body>
 	<?php 
 		session_start();
+		if($_SERVER['REQUEST_METHOD'] == "POST"){
+		}else{
+			unset($_SESSION['biztosito_neve']);
+			unset($_SESSION['biztosito_kategoria']);
+		}
 
 		include_once 'queries.php';
 		
@@ -31,13 +36,10 @@
 		$etkezes = $_SESSION["etkezes"];
 		$atszallas = $_SESSION["atszallas"];
 		
-		$biztosito = $_SESSION["biztositoNev"];
 		$legitarsasag = $_SESSION["legitarsasagNev"];
 		$repuloTipus = $_SESSION["repulo_tipus"];
 
 		$ar = $_SESSION["ar"];
-		
-		$selectedBiztosito = null;
 		
 		if(!isset($_SESSION['user'])){
 			include "menu.html";
@@ -45,10 +47,13 @@
 			header('Refresh: 2; URL = index.php');
 			die();
 		}
-		
+		$selectedBiztosito = null;
 		if(isset($_POST['biztosito_neve'])) {
-			echo "kivalasztva";
-			$selectedBiztosito = $_POST["biztosito_neve"];
+			$_SESSION['biztosito_neve'] = $_POST['biztosito_neve'];
+		}
+		$selectedKategoria = null;
+		if(isset($_POST['biztosito_kategoria'])) {
+			$_SESSION['biztosito_kategoria'] = $_POST['biztosito_kategoria'];
 		}
 	?>		
 	<header>
@@ -94,7 +99,7 @@
 					<td><?php echo $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc; ?></td>
 					<td><?php echo $legitarsasag; ?></td>
 					<td><?php echo $repuloTipus; ?></td>
-					<td><form method="POST"><select name="biztosito_neve" class="inputType">
+					<td><form method="POST"><select name="biztosito_neve" class="inputType" onchange="this.form.submit();">
 								<option disabled selected value> Válasszon! </option>
 								<?php
 									$biztosito = "SELECT NEV FROM BIZTOSITO WHERE LEGITARSASAG_NEV = '".$legitarsasag."'";
@@ -102,41 +107,54 @@
 									oci_execute($stmtBiztosito);
 												
 									while ( $row = oci_fetch_array($stmtBiztosito, OCI_ASSOC + OCI_RETURN_NULLS)) {
-										echo '<option>';
 										foreach ($row as $item) {
-											echo $item ;
+											if(strcmp($_SESSION['biztosito_neve'], $item) == 0) {
+												$selected = 'selected="selected"';
+											} else {
+												$selected = '';
+											}
+											echo '<option ';
+											echo $selected;
+											echo '>';
+											echo $item;
+											echo '</option>';
 										}
-										echo '</option>';
 									}
 								?>
 							</select></form></td>
-					<td><form method="POST" action="unBookedFlightsPageLoggedIn.php"><select name="biztosito_kategoria" class="inputType">
+					<td><form method="POST"><select name="biztosito_kategoria" class="inputType" onchange="this.form.submit()">
 								<option disabled selected value> Válasszon! </option>
 								<?php
-
-									$kategoriaSql = "SELECT KATEGORIA FROM BIZTOSITO WHERE NEV = 'Groupama' AND LEGITARSASAG_NEV = '".$legitarsasag."'";
+									$selectedBiztosito = $_SESSION['biztosito_neve'];
+									$kategoriaSql = "SELECT KATEGORIA FROM BIZTOSITO WHERE NEV = '".$selectedBiztosito."' AND LEGITARSASAG_NEV = '".$legitarsasag."'";
 									$stmtKategoria = oci_parse($conn, $kategoriaSql);
 									oci_execute($stmtKategoria);
 												
 									while ( $row = oci_fetch_array($stmtKategoria, OCI_ASSOC + OCI_RETURN_NULLS)) {
-										echo '<option>';
 										foreach ($row as $item) {
-											echo $item ;
+											if(strcmp($_SESSION['biztosito_kategoria'], $item) == 0) {
+												$selected2 = 'selected="selected"';
+											} else {
+												$selected2 = '';
+											}
+											echo '<option ';
+											echo $selected2;
+											echo '>';
+											echo $item;
+											echo '</option>';
 										}
-										echo '</option>';
 									}
 								?>
 							</select></form></td>
 					<td><?php
-						$selectedKategoria = $_POST["biztosito_kategoria"];
-						$selectedBiztosito = $_POST["biztosito_neve"];
+						$selectedKategoria = $_SESSION['biztosito_kategoria'];
 
 						$karpotlasSql = "SELECT KARPOTLAS FROM BIZTOSITO WHERE NEV = '".$selectedBiztosito."' AND KATEGORIA = '".$selectedKategoria."'";
 						$karpotlasStmt = oci_parse($conn, $karpotlasSql);
 						oci_execute($karpotlasStmt);
-						$kategoria = oci_fetch_row($karpotlasStmt);
+						$karpotlas = oci_fetch_row($karpotlasStmt);
 						
-						echo $kategoria[0];
+						echo $karpotlas[0];
 					?></td>
 
 

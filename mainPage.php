@@ -133,7 +133,8 @@
 					oci_execute($stmt);
 										
 					while($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
-						echo '<form method="POST" action="unBookedFlightsPageLoggedIn.php"><tr>';
+						echo '<tr>';
+						echo '<form action=unBookedFlightsPageLoggedIn.php method=POST>';
 						foreach ($row as $item) {
 							//echo $item . ' ';
 							$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item."' AND INDUL_ERKEZIK = 'érkezik'";
@@ -188,8 +189,6 @@
 													<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
 												<?php
 												
-												
-												if(isset($_POST["chooseButton"])) {
 													$_SESSION["honnan"] = $honnan_kiir;
 													$_SESSION["hova"] = $hova_kiir;
 													$_SESSION["startDate"] = $startDate;
@@ -220,7 +219,7 @@
 													$legitarsasagNev = oci_fetch_row($stmtLegitarsasag);
 													
 													$_SESSION["legitarsasagNev"] = $legitarsasagNev[0];
-												}
+												
 												
 										}
 										/*$sql3 = "SELECT MENETREND.Menetrend_id FROM MENETREND INNER JOIN KOZLEKEDIK ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' 
@@ -303,7 +302,8 @@
 							<?php
 							}*/
 						}
-						echo '</form></tr>';
+						echo '</form>';
+						echo '</tr>';
 					}
 					
 					/*$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE VAROS_NEV = '".$hova."' AND INDUL_ERKEZIK = 'indul'";
@@ -394,7 +394,6 @@
 				?>
 
 			</table>
-				
 		</div>
 	<div>
 
