@@ -43,7 +43,7 @@
 				<p>Honnan:</p><select name="honnan" class="inputType">
 								<option disabled selected value> Válasszon! </option>
 								<?php
-									$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'indul'";
+									$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'indul' GROUP BY VAROS_NEV ORDER BY VAROS_NEV ";
 									$stid = oci_parse($conn, $sql); 
 		 
 									oci_execute($stid);
@@ -60,7 +60,7 @@
 				<p>Hova:</p><select name="hova" class="inputType">
 								<option disabled selected value> Válasszon! </option>
 								<?php
-									$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'érkezik'";
+									$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'érkezik' GROUP BY VAROS_NEV ORDER BY VAROS_NEV ";
 									$stid = oci_parse($conn, $sql); 
 		 
 									oci_execute($stid);
@@ -74,13 +74,13 @@
 									}
 								?>
 							</select>
-				<p>Indulás dátuma</p><input type="date" name="startDate" required min="<?php echo date('Y-m-d');?>" class="inputType"/>	
-				<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults" required size="2" class="inputType" />	
-				<p>Gyerekek száma (kor: 0-14):</p><input type="text" name="numberOfChildren" required size="2" class="inputType" />
+				<p>Indulás dátuma</p><input type="date" name="startDate"  min="<?php echo date('Y-m-d');?>" class="inputType"/>	
+				<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults"  size="2" class="inputType" />	
+				<p>Gyerekek száma (kor: 0-14):</p><input type="text" name="numberOfChildren"  size="2" class="inputType" />
 				<p>Osztály:</p>
-				<input type="radio" name="seat" value="first" class="radioType" required>Elsőosztály</input>
+				<input type="radio" name="seat" value="first" class="radioType" >Elsőosztály</input>
 				<input type="radio" name="seat" value="second" class="radioType" >Másodosztály</input>
-				<p>Étkezés:</p><input type="radio" name="food" value="yes" class="radioType" required>Igen</input>
+				<p>Étkezés:</p><input type="radio" name="food" value="yes" class="radioType" >Igen</input>
 							<input type="radio" name="food" value="no" class="radioType" >Nem</input>	
 				<br/><input type="submit" style="margin-top:10%;" value="Keresés" name="searchButton" class="buttonType"/>
 			</div>
@@ -103,28 +103,122 @@
 					$honnan = null;
 				
 					if(ISSET($_POST["searchButton"])) {
-							$honnan = $_POST["honnan"];
-							$hova = $_POST["hova"];
-							$startDate = $_POST["startDate"];
-							$felnott = $_POST["numberOfAdults"];
-							$gyerek = $_POST["numberOfChildren"];
-							$seat = $_POST["seat"];
-							$etkezes = $_POST["food"];
+							$honnan = 'Róma';
+							$hova = 'Budapest';
+							$startDate = '2018-04-23';
+							$felnott = 1;
+							$gyerek = 1;
+							$seat = 'first';
+							$etkezes = 'yes';
 							
 							$day = getMenetrend($startDate);
 					}
+					
+					/*$sql10 = "SELECT Menetrend_id FROM MENETREND";
+					$stmt10 = oci_parse($conn, $sql10);	
+					oci_execute($stmt10);
+					
+					while ( $row10 = oci_fetch_array($stmt10, OCI_ASSOC + OCI_RETURN_NULLS)) {
+						foreach ($row10 as $item10) {
+							echo $item10;
+						}
+					}*/
+				
 										
-					$sql = "SELECT MENETREND.Menetrend_id FROM KOZLEKEDIK INNER JOIN MENETREND ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' 
+					$sql = "SELECT MENETREND.Menetrend_id FROM MENETREND INNER JOIN KOZLEKEDIK ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' 
 					AND KOZLEKEDIK.VAROS_NEV = '".$honnan."' AND KOZLEKEDIK.INDUL_ERKEZIK = 'indul'";
 					
 					$stmt = oci_parse($conn, $sql);
 					
 					oci_execute($stmt);
-					
+										
 					while($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
 						echo '<tr>';
 						foreach ($row as $item) {
-							$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item."' AND INDUL_ERKEZIK = 'indul' AND VAROS_NEV = '".$honnan."'";
+							//echo $item . ' ';
+							$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item."' AND INDUL_ERKEZIK = 'érkezik'";
+							$stmt2 = oci_parse($conn, $sql2);
+							oci_execute($stmt2);
+							while($row2 = oci_fetch_array($stmt2, OCI_ASSOC + OCI_RETURN_NULLS)) {
+									foreach($row2 as $item2) {
+										//echo $item2 . ' ';
+										if($item2==$hova) {
+												$atszallas=0;
+												$honnan_kiir=$honnan;
+												$hova_kiir=$item2;
+												
+												$oraSql = "SELECT ORA, PERC FROM MENETREND WHERE Menetrend_id = '".$item."'";
+												$oraStmt = oci_parse($conn, $oraSql);
+												oci_execute($oraStmt);
+												$ido = oci_fetch_row($oraStmt);
+												
+												$menetidoSql = "SELECT Menetido FROM UTAZASIDOTARTAM WHERE TAV = (SELECT TAV FROM MENETREND WHERE Menetrend_id = '".$item."')";
+												$menetStmt = oci_parse($conn, $menetidoSql);
+												oci_execute($menetStmt);
+												$idotartam = oci_fetch_row($menetStmt);
+												
+												$ora = floor($idotartam[0]/60);
+												$perc = $idotartam[0]%60;
+														
+												$erkezesOra = $ido[0] + $ora;
+												$erkezesPerc = $ido[1] + $perc;
+							
+												if($erkezesPerc >= 60) {
+													$erkezesOra += floor($erkezesPerc/60);
+													$erkezesPerc = $erkezesPerc%60;
+												}
+							
+												$erkezesNap = $startDate;
+												
+												if($erkezesOra >= 24) {
+													$incrementNap = strtotime("+1 day", strtotime($erkezesNap));
+													$erkezesNap = date('Y-m-d', $incrementNap);
+													$erkezesOra -= 24;
+												}
+
+												$ar = 80000;
+												
+												if($ido[1] == 0) {
+													$ido[1] = '00';
+												}
+												
+												echo '<td>' . $honnan_kiir . '</td><td>' . $hova_kiir . '</td><td>' . $startDate . ' ' . $ido[0] . ':' . $ido[1] . '</td>
+												<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td>'. $atszallas .'</td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
+												?>
+													<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
+												<?php
+										
+												
+										}
+										/*$sql3 = "SELECT MENETREND.Menetrend_id FROM MENETREND INNER JOIN KOZLEKEDIK ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' 
+											AND KOZLEKEDIK.VAROS_NEV = '".$item2."' AND KOZLEKEDIK.INDUL_ERKEZIK = 'indul'";
+											
+										$stmt3 = oci_parse($conn, $sql3);
+										oci_execute($stmt3);
+									
+										while($row3 = oci_fetch_array($stmt3, OCI_ASSOC + OCI_RETURN_NULLS)) {
+											foreach($row3 as $item3) {
+												//echo $item3 . ' ';
+												$sql4 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item3."' AND INDUL_ERKEZIK = 'érkezik'";
+												$stmt4 = oci_parse($conn, $sql4);
+												oci_execute($stmt4);
+											
+												while($row4 = oci_fetch_array($stmt4, OCI_ASSOC + OCI_RETURN_NULLS)) {
+													foreach($row4 as $item4) {
+														//echo $item4 . ' ';
+														if($item4==$hova) ;
+														$atszallas=1;
+														echo $atszallas . ' ';
+													}
+												}	
+											}
+										
+										}*/	
+									}
+												
+							}
+							
+							/*$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item."' AND INDUL_ERKEZIK = 'indul' AND VAROS_NEV = '".$honnan."'";
 							$stmt2 = oci_parse($conn, $sql2);
 							oci_execute($stmt2);
 							$varos = oci_fetch_row($stmt2);
@@ -132,9 +226,10 @@
 							$sql3 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item."' AND INDUL_ERKEZIK = 'érkezik' AND VAROS_NEV = '".$hova."'";
 							$stmt3 = oci_parse($conn, $sql3);
 							oci_execute($stmt3);
-							$varos2 = oci_fetch_row($stmt3);
+							$varos2 = oci_fetch_row($stmt3);*/
+
 							
-							$oraSql = "SELECT ORA, PERC FROM MENETREND WHERE Menetrend_id = '".$item."' AND NAP = '".$day."'";
+							/*$oraSql = "SELECT ORA, PERC FROM MENETREND WHERE Menetrend_id = '".$item."' AND NAP = '".$day."'";
 							$oraStmt = oci_parse($conn, $oraSql);
 							oci_execute($oraStmt);
 							$ido = oci_fetch_row($oraStmt);
@@ -143,6 +238,7 @@
 							$menetStmt = oci_parse($conn, $menetidoSql);
 							oci_execute($menetStmt);
 							$idotartam = oci_fetch_row($menetStmt);
+							
 							$ora = floor($idotartam[0]/60);
 							$perc = $idotartam[0]%60;
 														
@@ -165,18 +261,19 @@
 							
 							if($ido[1] == 0) {
 								$ido[1] = '00';
-							}
-							
-							echo '<td>' . $varos[0] . '</td><td>' . $varos2[0] . '</td><td>' . $startDate . ' ' . $ido[0] . ':' . $ido[1] . '</td>
-							<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td> 0 </td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
+							}*/
+							/*if($varos && $varos2) {*/
+							/*echo '<td>' . $varos[0] . '</td><td>' . $varos2[0] . '</td><td>' . $startDate . ' ' . $ido[0] . ':' . $ido[1] . '</td>
+							<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td>'. $atszallas .'</td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
 							?>
 								<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
 							<?php
+							}*/
 						}
 						echo '</tr>';
 					}
 					
-					$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE VAROS_NEV = '".$hova."' AND INDUL_ERKEZIK = 'indul'";
+					/*$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE VAROS_NEV = '".$hova."' AND INDUL_ERKEZIK = 'indul'";
 					
 					$stmt2 = oci_parse($conn, $sql2);
 					
@@ -258,7 +355,7 @@
 									echo '</tr>';
 							}
 						}
-					}						
+					}*/						
 					
 				
 				?>

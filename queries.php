@@ -33,30 +33,30 @@ function getMenetrend($startdate) {
 		return false;
 	}
 	
-	$sql = "select to_char (date '".$startdate."', 'D') d from dual";
+	$sql = "select to_char (date '".$startdate."', 'fmd') d from dual";
 	
 	$stmt = oci_parse($conn, $sql);
 	
 	oci_execute($stmt);
 	
 	$number = oci_fetch_row($stmt);
-	
-	if($number[0] = 1) {
-		$day = "Hétfő";
-	} else if($number[0] = 2) {
-		$day = "Kedd";
-	} else if($number[0] = 3) {
-		$day = "Szerda";
-	} else if($number[0] = 4) {
-		$day = "Csütörtök";
-	} else if($number[0] = 5) {
-		$day = "Péntek";
-	} else if($number[0] = 6) {
-		$day = "Szombat";
-	} else if($number[0] = 7) {
-		$day = "Vasárnap";
-	}
-	
+			
+		if($number[0] == 2) {
+			$day = "Hétfő";
+		} else if($number[0] == 3) {
+			$day = "Kedd";
+		} else if($number[0] == 4) {
+			$day = "Szerda";
+		} else if($number[0] == 5) {
+			$day = "Csütörtök";
+		} else if($number[0] == 6) {
+			$day = "Péntek";
+		} else if($number[0] == 7) {
+			$day = "Szombat";
+		} else if($number[0] == 1) {
+			$day = "Vasárnap";
+		}
+		
 	return $day;
 	
 	
