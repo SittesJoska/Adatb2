@@ -147,7 +147,9 @@
 								?>
 							</select></form></td>
 					<td><?php
-						$selectedKategoria = $_SESSION['biztosito_kategoria'];
+						if(isset($_SESSION['biztosito_kategoria'])) {
+							$selectedKategoria = $_SESSION['biztosito_kategoria'];
+						}
 
 						$karpotlasSql = "SELECT KARPOTLAS FROM BIZTOSITO WHERE NEV = '".$selectedBiztosito."' AND KATEGORIA = '".$selectedKategoria."'";
 						$karpotlasStmt = oci_parse($conn, $karpotlasSql);
