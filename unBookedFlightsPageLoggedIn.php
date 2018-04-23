@@ -165,12 +165,12 @@
 									while ( $row = oci_fetch_array($stmtBiztosito, OCI_ASSOC + OCI_RETURN_NULLS)) {
 										foreach ($row as $item) {
 											if(strcmp($_SESSION['biztosito_neve'], $item) == 0) {
-												$selected = 'selected="selected"';
+												$selected1 = 'selected="selected"';
 											} else {
-												$selected = '';
+												$selected1 = '';
 											}
 											echo '<option ';
-											echo $selected;
+											echo $selected1;
 											echo '>';
 											echo $item;
 											echo '</option>';
