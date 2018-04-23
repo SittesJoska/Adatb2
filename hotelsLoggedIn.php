@@ -12,12 +12,21 @@
   <?php 
 		
 		session_start();
+		include_once("queries.php");
+		$conn = connect();
+		
 		if(!isset($_SESSION['user'])){
 			include "menu.html";
 			echo '<div class="div3"><p>Nem vagy bejelentkezve...</p></div>';
 			header('Refresh: 2; URL = index.php');
 			die();
 		}
+		
+		$hovaSql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'érkezik' AND MENETREND_ID = '".$_SESSION["selected"]."'";
+		$stmtHova = oci_parse($conn, $hovaSql);
+		oci_execute($stmtHova);
+		$hovaRow = oci_fetch_row($stmtHova);
+		$hova = $hovaRow[0];
 	?>	
 	<header>
 		<form action="mainPage.php">
@@ -38,11 +47,9 @@
 	<div class="container1" style="margin-top:4%;">
 		<div class="loginDiv" style="margin-top:2%;">
 		
-		<h2><?php echo $_SESSION["hova"] ?></h2>
-		<?php 
-			include_once("queries.php");
-			$conn = connect();
-			$szalloda_sql = "SELECT SZALLODA_NEV FROM SZALLODA WHERE VAROS_NEV='".$_SESSION['hova']."'";
+		<h2><?php echo $hova ?></h2>
+		<?php
+			$szalloda_sql = "SELECT SZALLODA_NEV FROM SZALLODA WHERE VAROS_NEV='".$hova."'";
 			$szalloda_stmt = oci_parse($conn,$szalloda_sql);
 			
 			oci_execute($szalloda_stmt);
