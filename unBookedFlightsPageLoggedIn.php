@@ -173,15 +173,15 @@
 				
 				<tr>
 			</table>	
-			<div style="text-align:center; margin:auto; margin-top:4%;width=50%;"><form action="reservationsPage.php" method="POST"><input type="submit" style="font-size:20px; margin-left:5px;" value="Lefoglal" name="bookButton" class="buttonType"/></form></div>
+			<div style="text-align:center; margin:auto; margin-top:4%;width=50%;"><input type="submit" style="font-size:20px; margin-left:5px;" value="Lefoglal" name="bookButton" class="buttonType"/></div>
 		</div>
 		<div class="container2">
-					<p>Átszállások száma: <?php echo $atszallas ?></p>	
-					<p>Felnőttek száma: <?php echo $felnott ?></p>	
-					<p>Gyerekek száma: <?php echo $gyerek ?></p>
-					<p>Osztály: <?php echo $osztaly ?></p>	
-					<p>Étkezés: <?php echo $etkezes ?></p>	
-					<p>Ár: <?php echo $ar ?></p>	
+					<p>Átszállások száma: 1</p>	
+					<p>Felnőttek száma: 4</p>	
+					<p>Gyerekek száma: 2</p>
+					<p>Osztály: 1</p>	
+					<p>Étkezés: Igen</p>	
+					<p>Ár: 250 €</p>	
 			</div>			
 	</div>
 	
