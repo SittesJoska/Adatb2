@@ -62,6 +62,9 @@ function getMenetrend($startdate) {
 	
 }
 
+function insertFoglalas($felnott, $gyerek, $seat, $startDate, $jaratId) {
+}
+
 function getUtazasIdotartam($menetrendId) {
 	if(!($conn = connect())){
 		return false;

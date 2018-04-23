@@ -235,7 +235,20 @@
 				
 				<tr>
 			</table>	
-			<div style="text-align:center; margin:auto; margin-top:4%;width=50%;"><input type="submit" style="font-size:20px; margin-left:5px;" value="Lefoglal" name="bookButton" class="buttonType"/></div>
+			<form><div style="text-align:center; margin:auto; margin-top:4%;width=50%;"><input type="submit" style="font-size:20px; margin-left:5px;" value="Lefoglal" name="bookButton" class="buttonType"/></div></form>
+			<?php 
+			if(isset($_POST["bookButton"])) {
+				$seat = strcmp($osztaly, 'first') == 0 ? 1 : 2;
+				$jaratSql = "SELECT JARAT_ID FROM JARAT WHERE MENETREND_ID = '".$selected."'";
+				$jaratStmt = oci_parse($conn, $jaratSql);
+				oci_execute($jaratStmt);
+				$jarat = oci_fetch_row($jaratStmt);
+				$jaratId = $jarat[0];
+				
+				//insert into foglalas (foglalas id = select max+1) + insert into szemelyfoglalasai
+				insertFoglalas($felnott, $gyerek, $seat, $startDate, $jaratId);
+			}
+			?>
 		</div>
 		<div class="container2">
 					<p>Átszállások száma: <?php echo $atszallas ?></p>	
