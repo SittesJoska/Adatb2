@@ -1,8 +1,8 @@
 <?php
 
 function connect() {
-	$dbuser = "SinterJóska";
-	$dbpass = "mk8h7a3";
+	$dbuser = "Jaki91";
+	$dbpass = "Vanginkel18";
 	$dbname = "xe";
 
 	$tns = "

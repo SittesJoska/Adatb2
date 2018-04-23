@@ -38,15 +38,31 @@
 	<div class="container1" style="margin-top:4%;">
 		<div class="loginDiv" style="margin-top:2%;">
 		
-		<h2>Város neve</h2>
-		<ul>
+		<h2><?php echo $_SESSION["hova"] ?></h2>
+		<?php 
+			include_once("queries.php");
+			$conn = connect();
+			$szalloda_sql = "SELECT SZALLODA_NEV FROM SZALLODA WHERE VAROS_NEV='".$_SESSION['hova']."'";
+			$szalloda_stmt = oci_parse($conn,$szalloda_sql);
+			
+			oci_execute($szalloda_stmt);
+			while ( $row = oci_fetch_array($szalloda_stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+				echo '<ul>';
+				foreach ($row as $item) {
+					echo '<li>'.$item.'</li>';
+				}
+				echo '</ul>';
+			}
+			echo '<a href="unBookedFlightsPageLoggedIn.php" ><input type="submit" style="font-size:13px;" value="Vissza" name="goBackButton" class="buttonType"/></a>';
+		?>
+		<!--<ul>
 			<li>Szálloda 1</li>
 			<li>Szálloda 2</li>
 			<li>Szálloda 3</li>
 			<li>Szálloda 4</li>
 			<li>Szálloda 5</li>
 		</ul>
-		<a href="userPage.php" ><input type="submit" style="font-size:13px;" value="Vissza" name="goBackButton" class="buttonType"/></a>
+		<a href="userPage.php" ><input type="submit" style="font-size:13px;" value="Vissza" name="goBackButton" class="buttonType"/></a>-->
 		
 	</div>
 
