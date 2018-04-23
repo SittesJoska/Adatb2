@@ -186,9 +186,9 @@
 												echo '<td>' . $honnan_kiir . '</td><td>' . $hova_kiir . '</td><td>' . $startDate . ' ' . $ido[0] . ':' . $ido[1] . '</td>
 												<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td>'. $atszallas .'</td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
 												?>
-													<td><form action=mainPage.php method=POST><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></form></td>
+													<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
 												<?php
-												if($_POST['chooseButton']) {
+												//if($_POST['chooseButton']) {
 													$_SESSION["honnan"] = $honnan_kiir;
 													$_SESSION["hova"] = $hova_kiir;
 													$_SESSION["startDate"] = $startDate;
@@ -220,7 +220,7 @@
 													
 													$_SESSION["legitarsasagNev"] = $legitarsasagNev[0];
 												
-												}
+												//}
 										}
 										/*$sql3 = "SELECT MENETREND.Menetrend_id FROM MENETREND INNER JOIN KOZLEKEDIK ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' 
 											AND KOZLEKEDIK.VAROS_NEV = '".$item2."' AND KOZLEKEDIK.INDUL_ERKEZIK = 'indul'";
