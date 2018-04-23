@@ -22,20 +22,40 @@
 				$selected = $_POST["selected"];
 				$_SESSION["selected"] = $selected;
 				
-				$felnott = $_POST["numberOfAdults"];
-				$gyerek = $_POST["numberOfChildren"];
-				$osztaly = $_POST["seat"];
-				$etkezes = $_POST["food"];
+				$felnott = $_SESSION["felnottSzam"];
+				$gyerek = $_SESSION["gyerekSzam"];
+				$osztaly = $_SESSION["seat"];
+				$etkezes = $_SESSION["etkezes"];
 				$atszallas = $_POST["atszallas"];
+				$_SESSION["atszallas"] = $atszallas;
+				
+				$startDate = $_SESSION["startDate"];
 
 				$ar = $_POST["ar"];
+				$_SESSION["ar"] = $ar;
 				
 			} else if(strcmp($lastEl, 'unBookedFlightsPageLoggedIn.php') == 0) {
 				$selected = $_SESSION["selected"];
+				
+				$startDate = $_SESSION["startDate"];
+				$felnott = $_SESSION["felnottSzam"];
+				$gyerek = $_SESSION["gyerekSzam"];
+				$osztaly = $_SESSION["seat"];
+				$etkezes = $_SESSION["etkezes"];
+				$atszallas = $_SESSION["atszallas"];
+				$ar = $_SESSION["ar"];
 			}
 
 		}else{
 			$selected = $_SESSION["selected"];
+			
+			$startDate = $_SESSION["startDate"];
+			$felnott = $_SESSION["felnottSzam"];
+			$gyerek = $_SESSION["gyerekSzam"];
+			$osztaly = $_SESSION["seat"];
+			$etkezes = $_SESSION["etkezes"];
+			$atszallas = $_SESSION["atszallas"];
+			$ar = $_SESSION["ar"];
 			unset($_SESSION['biztosito_neve']);
 			unset($_SESSION['biztosito_kategoria']);
 		}
@@ -98,14 +118,8 @@
 					<th>Kárpótlás</th>						
 				</tr>
 				<tr>
-				<?php 
-					$daySql = "SELECT NAP FROM MENETREND WHERE MENETREND_ID = '".$selected."'";
-					$dayStmt = oci_parse($conn, $daySql);
-					oci_execute($dayStmt);
-					$dayRow = oci_fetch_row($dayStmt);
-					
-					$startDate = $dayRow[0];
-					
+				<?php
+										
 					$honnanSql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'indul' AND MENETREND_ID = '".$selected."'";
 					$stmtHonnan = oci_parse($conn, $honnanSql);
 					oci_execute($stmtHonnan);
@@ -224,12 +238,12 @@
 			<div style="text-align:center; margin:auto; margin-top:4%;width=50%;"><input type="submit" style="font-size:20px; margin-left:5px;" value="Lefoglal" name="bookButton" class="buttonType"/></div>
 		</div>
 		<div class="container2">
-					<p>Átszállások száma: 1</p>	
-					<p>Felnőttek száma: 4</p>	
-					<p>Gyerekek száma: 2</p>
-					<p>Osztály: 1</p>	
-					<p>Étkezés: Igen</p>	
-					<p>Ár: 250 €</p>	
+					<p>Átszállások száma: <?php echo $atszallas ?></p>	
+					<p>Felnőttek száma: <?php echo $felnott ?></p>	
+					<p>Gyerekek száma: <?php echo $gyerek ?></p>
+					<p>Osztály: <?php echo strcmp($osztaly, 'first') == 0 ? 'Első' : 'Második' ?></p>	
+					<p>Étkezés: <?php echo strcmp($etkezes, 'yes') == 0 ? 'Igen' : 'Nem' ?></p>	
+					<p>Ár: <?php echo $ar ?> €</p>	
 			</div>			
 	</div>
 	

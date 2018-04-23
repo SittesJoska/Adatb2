@@ -106,11 +106,16 @@
 							$honnan = 'Róma';
 							$hova = 'Budapest';
 							$startDate = '2018-04-23';
+							$_SESSION["startDate"] = $startDate;
 							$felnott = 1;
+							$_SESSION["felnottSzam"] = $felnott;
 							$gyerek = 1;
+							$_SESSION["gyerekSzam"] = $gyerek;
 							$seat = 'first';
-							$etkezes = 'yes';
-														
+							$_SESSION["seat"] = $seat;
+							$etkezes = 'no';
+							$_SESSION["etkezes"] = $etkezes;
+				
 							$day = getMenetrend($startDate);
 					}
 					
@@ -173,6 +178,7 @@
 
 												$ar = 80000;
 												
+												
 												if($ido[1] == 0) {
 													$ido[1] = '00';
 												}
@@ -181,7 +187,10 @@
 												<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td>'. $atszallas .'</td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
 												?>
 													<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
-													<td><input type="hidden" name="selected" value='<?php echo $item ?>'</td>
+													<td><input type="hidden" name="selected" value='<?php echo $item ?>'/></td>
+													<td><input type="hidden" name="atszallas" value='<?php echo $atszallas ?>'/></td>
+													<td><input type="hidden" name="ar" value='<?php echo $ar ?>'/></td>
+
 												<?php
 										}
 										/*$sql3 = "SELECT MENETREND.Menetrend_id FROM MENETREND INNER JOIN KOZLEKEDIK ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' 
