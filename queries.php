@@ -1,8 +1,8 @@
 <?php
 
 function connect() {
-	$dbuser = "Jaki91";
-	$dbpass = "Vanginkel18";
+	$dbuser = "SinterJóska";
+	$dbpass = "mk8h7a3";
 	$dbname = "xe";
 
 	$tns = "
@@ -60,5 +60,53 @@ function getMenetrend($startdate) {
 	return $day;
 	
 	
+}
+
+function getUtazasIdotartam($menetrendId) {
+	if(!($conn = connect())){
+		return false;
+	}
+	$menetidoSql = "SELECT Menetido FROM UTAZASIDOTARTAM WHERE TAV = (SELECT TAV FROM MENETREND WHERE Menetrend_id = '".$menetrendId."')";
+	$menetStmt = oci_parse($conn, $menetidoSql);
+	oci_execute($menetStmt);
+	$idotartam = oci_fetch_row($menetStmt);
+	
+	return $idotartam[0];
+}
+
+function getIndulas($menetrendId) {
+	if(!($conn = connect())){
+		return false;
+	}
+	$oraSql = "SELECT ORA, PERC FROM MENETREND WHERE Menetrend_id = '".$menetrendId."'";
+	$oraStmt = oci_parse($conn, $oraSql);
+	oci_execute($oraStmt);
+	$ido = oci_fetch_row($oraStmt);
+	
+	return $ido;
+}
+
+function getRepulo($selectedId) {
+	if(!($conn = connect())){
+		return false;
+	}
+	$tipusSql = "SELECT REPULO_TIPUS FROM MENETREND WHERE MENETREND_ID = '".$selectedId."'";
+	$tipusStmt = oci_parse($conn, $tipusSql);
+	oci_execute($tipusStmt);
+	$tipus = oci_fetch_row($tipusStmt);
+													
+	return $tipus[0];
+}
+
+function getLegitarsasag($selectedId) {
+	if(!($conn = connect())){
+		return false;
+	}
+	$legitarsasag = "SELECT LEGITARSASAG_NEV FROM MENETREND WHERE MENETREND_ID = '".$selectedId."'";
+	$stmtLegitarsasag = oci_parse($conn, $legitarsasag);
+	oci_execute($stmtLegitarsasag);
+	$legitarsasagNev = oci_fetch_row($stmtLegitarsasag);
+													
+	return $legitarsasagNev[0];
 }
 ?>

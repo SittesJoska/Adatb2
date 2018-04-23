@@ -18,9 +18,24 @@
 			if(strcmp($lastEl, 'mainPage.php') == 0) {
 				unset($_SESSION['biztosito_neve']);
 				unset($_SESSION['biztosito_kategoria']);
+				
+				$selected = $_POST["selected"];
+				$_SESSION["selected"] = $selected;
+				
+				$felnott = $_POST["numberOfAdults"];
+				$gyerek = $_POST["numberOfChildren"];
+				$osztaly = $_POST["seat"];
+				$etkezes = $_POST["food"];
+				$atszallas = $_POST["atszallas"];
+
+				$ar = $_POST["ar"];
+				
+			} else if(strcmp($lastEl, 'unBookedFlightsPageLoggedIn.php') == 0) {
+				$selected = $_SESSION["selected"];
 			}
 
 		}else{
+			$selected = $_SESSION["selected"];
 			unset($_SESSION['biztosito_neve']);
 			unset($_SESSION['biztosito_kategoria']);
 		}
@@ -29,25 +44,7 @@
 		
 		$conn = connect();
 		
-		$honnan = $_SESSION["honnan"];
-		$hova = $_SESSION["hova"];
-		$startDate = $_SESSION["startDate"];
-		$indulasOra = $_SESSION["indulasOra"];
-		$indulasPerc = $_SESSION["indulasPerc"];
-		$erkezesNap = $_SESSION["erkezesNap"];
-		$erkezesOra = $_SESSION["erkezesOra"];
-		$erkezesPerc = $_SESSION["erkezesPerc"];
 		
-		$felnott = $_SESSION["felnottSzam"];
-		$gyerek = $_SESSION["gyerekSzam"];
-		$osztaly = $_SESSION["osztaly"];
-		$etkezes = $_SESSION["etkezes"];
-		$atszallas = $_SESSION["atszallas"];
-		
-		$legitarsasag = $_SESSION["legitarsasagNev"];
-		$repuloTipus = $_SESSION["repulo_tipus"];
-
-		$ar = $_SESSION["ar"];
 		
 		if(!isset($_SESSION['user'])){
 			include "menu.html";
@@ -101,9 +98,60 @@
 					<th>Kárpótlás</th>						
 				</tr>
 				<tr>
+				<?php 
+					$daySql = "SELECT NAP FROM MENETREND WHERE MENETREND_ID = '".$selected."'";
+					$dayStmt = oci_parse($conn, $daySql);
+					oci_execute($dayStmt);
+					$dayRow = oci_fetch_row($dayStmt);
+					
+					$startDate = $dayRow[0];
+					
+					$honnanSql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'indul' AND MENETREND_ID = '".$selected."'";
+					$stmtHonnan = oci_parse($conn, $honnanSql);
+					oci_execute($stmtHonnan);
+					$honnanRow = oci_fetch_row($stmtHonnan);
+					$honnan = $honnanRow[0];
+										
+					$hovaSql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'érkezik' AND MENETREND_ID = '".$selected."'";
+					$stmtHova = oci_parse($conn, $hovaSql);
+					oci_execute($stmtHova);
+					$hovaRow = oci_fetch_row($stmtHova);
+					$hova = $hovaRow[0];
+					
+					$ido = getIndulas($selected);
+												
+					$idotartam = getUtazasIdotartam($selected);
+												
+					$ora = floor($idotartam/60);
+					$perc = $idotartam%60;
+														
+					$erkezesOra = $ido[0] + $ora;
+					$erkezesPerc = $ido[1] + $perc;
+							
+					if($erkezesPerc >= 60) {
+						$erkezesOra += floor($erkezesPerc/60);
+						$erkezesPerc = $erkezesPerc%60;
+					}
+							
+					$erkezesNap = $startDate;
+												
+					if($erkezesOra >= 24) {
+						$incrementNap = strtotime("+1 day", strtotime($erkezesNap));
+						$erkezesNap = date('Y-m-d', $incrementNap);
+						$erkezesOra -= 24;
+					}
+					
+					if($ido[1] == 0) {
+						$ido[1] = '00';
+					}
+					
+					$legitarsasag = getLegitarsasag($selected);
+					$repuloTipus = getRepulo($selected);
+
+				?>
 					<td><?php echo $honnan; ?></td>
 					<td><?php echo $hova; ?></td>
-					<td><?php echo $startDate . ' ' . $indulasOra . ':' . $indulasPerc; ?></td>
+					<td><?php echo $startDate . ' ' . $ido[0] . ':' . $ido[1]; ?></td>
 					<td><?php echo $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc; ?></td>
 					<td><?php echo $legitarsasag; ?></td>
 					<td><?php echo $repuloTipus; ?></td>

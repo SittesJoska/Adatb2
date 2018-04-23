@@ -148,18 +148,12 @@
 												$honnan_kiir=$honnan;
 												$hova_kiir=$item2;
 												
-												$oraSql = "SELECT ORA, PERC FROM MENETREND WHERE Menetrend_id = '".$item."'";
-												$oraStmt = oci_parse($conn, $oraSql);
-												oci_execute($oraStmt);
-												$ido = oci_fetch_row($oraStmt);
+												$ido = getIndulas($item);
 												
-												$menetidoSql = "SELECT Menetido FROM UTAZASIDOTARTAM WHERE TAV = (SELECT TAV FROM MENETREND WHERE Menetrend_id = '".$item."')";
-												$menetStmt = oci_parse($conn, $menetidoSql);
-												oci_execute($menetStmt);
-												$idotartam = oci_fetch_row($menetStmt);
+												$idotartam = getUtazasIdotartam($item);
 												
-												$ora = floor($idotartam[0]/60);
-												$perc = $idotartam[0]%60;
+												$ora = floor($idotartam/60);
+												$perc = $idotartam%60;
 														
 												$erkezesOra = $ido[0] + $ora;
 												$erkezesPerc = $ido[1] + $perc;
@@ -187,40 +181,8 @@
 												<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td>'. $atszallas .'</td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
 												?>
 													<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
+													<td><input type="hidden" name="selected" value='<?php echo $item ?>'</td>
 												<?php
-												//if($_POST['chooseButton']) {
-													$_SESSION["honnan"] = $honnan_kiir;
-													$_SESSION["hova"] = $hova_kiir;
-													$_SESSION["startDate"] = $startDate;
-													$_SESSION["indulasOra"] = $ido[0];
-													$_SESSION["indulasPerc"] = $ido[1];
-													$_SESSION["erkezesNap"] = $erkezesNap;
-													$_SESSION["erkezesOra"] = $erkezesOra;
-													$_SESSION["erkezesPerc"] = $erkezesPerc;
-													$_SESSION["felnottSzam"] = $felnott;
-													$_SESSION["gyerekSzam"] = $gyerek;
-													$_SESSION["osztaly"] = $seat;
-													$_SESSION["etkezes"] = $etkezes;
-													$_SESSION["atszallas"] = $atszallas;
-
-													$_SESSION["ar"] = $ar;
-
-													
-													$tipusSql = "SELECT REPULO_TIPUS FROM MENETREND WHERE MENETREND_ID = '".$item."'";
-													$tipusStmt = oci_parse($conn, $tipusSql);
-													oci_execute($tipusStmt);
-													$tipus = oci_fetch_row($tipusStmt);
-													
-													$_SESSION["repulo_tipus"] = $tipus[0];
-													
-													$legitarsasag = "SELECT LEGITARSASAG_NEV FROM MENETREND WHERE MENETREND_ID = '".$item."'";
-													$stmtLegitarsasag = oci_parse($conn, $legitarsasag);
-													oci_execute($stmtLegitarsasag);
-													$legitarsasagNev = oci_fetch_row($stmtLegitarsasag);
-													
-													$_SESSION["legitarsasagNev"] = $legitarsasagNev[0];
-												
-												//}
 										}
 										/*$sql3 = "SELECT MENETREND.Menetrend_id FROM MENETREND INNER JOIN KOZLEKEDIK ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' 
 											AND KOZLEKEDIK.VAROS_NEV = '".$item2."' AND KOZLEKEDIK.INDUL_ERKEZIK = 'indul'";
