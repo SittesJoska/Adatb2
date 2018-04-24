@@ -1,8 +1,8 @@
 <?php
 
 function connect() {
-	$dbuser = "Jaki91";
-	$dbpass = "Vanginkel18";
+	$dbuser = "SinterJóska";
+	$dbpass = "mk8h7a3";
 	$dbname = "xe";
 
 	$tns = "
@@ -110,7 +110,7 @@ function getLegitarsasag($selectedId) {
 	return $legitarsasagNev[0];
 }
 
-function insertFoglalas($felnott, $gyerek, $seat, $startDate, $jaratId) {
+function insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId) {
 	if(!($conn = connect())){
 		return false;
 	}
@@ -122,7 +122,7 @@ function insertFoglalas($felnott, $gyerek, $seat, $startDate, $jaratId) {
 	$max_fog_id = oci_fetch_row($stmt_max_fog_id);
 	$maximum = $max_fog_id[0]+1;
 	
-	$sql_insert_foglalas = "INSERT INTO FOGLALAS VALUES('$maximum','$felnott','$gyerek','$seat',TO_DATE('$startDate','yyyy-mm-dd'), '$jaratId')";
+	$sql_insert_foglalas = "INSERT INTO FOGLALAS VALUES('$maximum','$felnott', '$gyerek', '$etkezes', '$seat',TO_DATE('$startDate','yyyy-mm-dd'), '$jaratId')";
 	$stmt_insert_foglalas = oci_parse($conn, $sql_insert_foglalas);
 	oci_execute($stmt_insert_foglalas);
 	

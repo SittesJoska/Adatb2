@@ -246,8 +246,9 @@
 				$jarat = oci_fetch_row($jaratStmt);
 				$jaratId = $jarat[0];
 				
-				//insert into foglalas (foglalas id = select max+1) + insert into szemelyfoglalasai
-				insertFoglalas($felnott, $gyerek, $seat, $startDate, $jaratId);
+				insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId);
+				
+				header("Location: reservationsPage.php");
 			}
 			?>
 		</div>
