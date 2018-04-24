@@ -1,8 +1,8 @@
 <?php
 
 function connect() {
-	$dbuser = "SinterJóska";
-	$dbpass = "mk8h7a3";
+	$dbuser = "Jaki91";
+	$dbpass = "Vanginkel18";
 	$dbname = "xe";
 
 	$tns = "
@@ -62,9 +62,6 @@ function getMenetrend($startdate) {
 	
 }
 
-function insertFoglalas($felnott, $gyerek, $seat, $startDate, $jaratId) {
-}
-
 function getUtazasIdotartam($menetrendId) {
 	if(!($conn = connect())){
 		return false;
@@ -111,5 +108,27 @@ function getLegitarsasag($selectedId) {
 	$legitarsasagNev = oci_fetch_row($stmtLegitarsasag);
 													
 	return $legitarsasagNev[0];
+}
+
+function insertFoglalas($felnott, $gyerek, $seat, $startDate, $jaratId) {
+	if(!($conn = connect())){
+		return false;
+	}
+	
+	$sql_max_fog_id = "SELECT MAX(FOGLALAS_ID) FROM FOGLALAS";
+	$stmt_max_fog_id = oci_parse($conn, $sql_max_fog_id);
+	oci_execute($stmt_max_fog_id);
+	
+	$max_fog_id = oci_fetch_row($stmt_max_fog_id);
+	$maximum = $max_fog_id[0]+1;
+	
+	$sql_insert_foglalas = "INSERT INTO FOGLALAS VALUES('$maximum','$felnott','$gyerek','$seat',TO_DATE('$startDate','yyyy-mm-dd'), '$jaratId')";
+	$stmt_insert_foglalas = oci_parse($conn, $sql_insert_foglalas);
+	oci_execute($stmt_insert_foglalas);
+	
+	$user = $_SESSION['user'];
+	$sql_insert_szemely_foglalasai = "INSERT INTO SZEMELYFOGLALASAI VALUES('$user','$maximum')";
+	$stmt_insert_szemely_foglalasai = oci_parse($conn, $sql_insert_szemely_foglalasai);
+	oci_execute($stmt_insert_szemely_foglalasai);
 }
 ?>

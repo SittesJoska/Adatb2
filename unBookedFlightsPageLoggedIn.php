@@ -17,45 +17,48 @@
 			$lastEl = array_values(array_slice($myarray, -1))[0];
 			if(strcmp($lastEl, 'mainPage.php') == 0) {
 				unset($_SESSION['biztosito_neve']);
-				unset($_SESSION['biztosito_kategoria']);
-				
-				$selected = $_POST["selected"];
-				$_SESSION["selected"] = $selected;
+				unset($_SESSION['biztosito_kategoria']);		
 				
 				$felnott = $_SESSION["felnottSzam"];
 				$gyerek = $_SESSION["gyerekSzam"];
 				$osztaly = $_SESSION["seat"];
 				$etkezes = $_SESSION["etkezes"];
+				$startDate = $_SESSION["startDate"];
+				
 				$atszallas = $_POST["atszallas"];
 				$_SESSION["atszallas"] = $atszallas;
 				
-				$startDate = $_SESSION["startDate"];
+				$selected = $_POST["selected"];
+				$_SESSION["selected"] = $selected;
 
 				$ar = $_POST["ar"];
 				$_SESSION["ar"] = $ar;
 				
 			} else if(strcmp($lastEl, 'unBookedFlightsPageLoggedIn.php') == 0) {
-				$selected = $_SESSION["selected"];
 				
 				$startDate = $_SESSION["startDate"];
 				$felnott = $_SESSION["felnottSzam"];
 				$gyerek = $_SESSION["gyerekSzam"];
 				$osztaly = $_SESSION["seat"];
 				$etkezes = $_SESSION["etkezes"];
+				
+				$selected = $_SESSION["selected"];
 				$atszallas = $_SESSION["atszallas"];
 				$ar = $_SESSION["ar"];
 			}
 
 		}else{
-			$selected = $_SESSION["selected"];
 			
 			$startDate = $_SESSION["startDate"];
 			$felnott = $_SESSION["felnottSzam"];
 			$gyerek = $_SESSION["gyerekSzam"];
 			$osztaly = $_SESSION["seat"];
 			$etkezes = $_SESSION["etkezes"];
+			
+			$selected = $_SESSION["selected"];
 			$atszallas = $_SESSION["atszallas"];
 			$ar = $_SESSION["ar"];
+			
 			unset($_SESSION['biztosito_neve']);
 			unset($_SESSION['biztosito_kategoria']);
 		}
@@ -63,9 +66,7 @@
 		include_once 'queries.php';
 		
 		$conn = connect();
-		
-		
-		
+			
 		if(!isset($_SESSION['user'])){
 			include "menu.html";
 			echo '<div class="div3"><p>Nem vagy bejelentkezve...</p></div>';
@@ -235,7 +236,7 @@
 				
 				<tr>
 			</table>	
-			<form><div style="text-align:center; margin:auto; margin-top:4%;width=50%;"><input type="submit" style="font-size:20px; margin-left:5px;" value="Lefoglal" name="bookButton" class="buttonType"/></div></form>
+			<form method="POST"><div style="text-align:center; margin:auto; margin-top:4%;width=50%;"><input type="submit" style="font-size:20px; margin-left:5px;" value="Lefoglal" name="bookButton" class="buttonType"/></div></form>
 			<?php 
 			if(isset($_POST["bookButton"])) {
 				$seat = strcmp($osztaly, 'first') == 0 ? 1 : 2;
