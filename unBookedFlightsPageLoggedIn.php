@@ -239,16 +239,33 @@
 			<form method="POST"><div style="text-align:center; margin:auto; margin-top:4%;width=50%;"><input type="submit" style="font-size:20px; margin-left:5px;" value="Lefoglal" name="bookButton" class="buttonType"/></div></form>
 			<?php 
 			if(isset($_POST["bookButton"])) {
-				$seat = strcmp($osztaly, 'first') == 0 ? 1 : 2;
-				$jaratSql = "SELECT JARAT_ID FROM JARAT WHERE MENETREND_ID = '".$selected."'";
-				$jaratStmt = oci_parse($conn, $jaratSql);
-				oci_execute($jaratStmt);
-				$jarat = oci_fetch_row($jaratStmt);
-				$jaratId = $jarat[0];
+				$egyenlegSql = "SELECT EGYENLEG FROM BANKSZAMLA WHERE BANKSZAMLASZAM = (SELECT BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '".$_SESSION["user"]."'";
+				$egyenlegStmt = oci_parse($conn, $egyenlegSql);
+				oci_execute($egyenlegStmt);
+				$egyenlegRow = oci_fetch_row($egyenlegStmt);
+				$egyenleg = $egyenlegRow[0];
 				
-				insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId);
+				if($egyenleg > $ar) {
+					$updatedEgyenleg = $egyenleg - $ar;
+					$updateEgyenleg = "UPDATE BANKSZAMLA SET EGYENLEG = '".$updatedEgyenleg."'";
+					$updateStmt = oci_parse($conn, $updateEgyenleg);
+					oci_execute($updateStmt);
+					
+					$seat = strcmp($osztaly, 'first') == 0 ? 1 : 2;
+					$jaratSql = "SELECT JARAT_ID FROM JARAT WHERE MENETREND_ID = '".$selected."'";
+					$jaratStmt = oci_parse($conn, $jaratSql);
+					oci_execute($jaratStmt);
+					$jarat = oci_fetch_row($jaratStmt);
+					$jaratId = $jarat[0];
+					
+					insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId);
+					
+					header("Location: reservationsPage.php");
+				} else {
+					echo 'A jegy megvásárlásához töltse fel egyenlegét!';
+				}
 				
-				header("Location: reservationsPage.php");
+				
 			}
 			?>
 		</div>
