@@ -99,6 +99,7 @@
 							oci_execute($menetrendStmt);
 							while($menetrendRow = oci_fetch_array($menetrendStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
 								echo '<tr>';
+								echo '<form method=POST>';
 								foreach ($menetrendRow as $menetrendId) {
 									$honnanSql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE MENETREND_ID = '".$menetrendId."' AND INDUL_ERKEZIK = 'indul'";
 									$honnanStmt = oci_parse($conn, $honnanSql);
@@ -145,11 +146,20 @@
 									?>
 										<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
 										<td><input type="submit" style="font-size:11px;" value="Töröl" name="deleteButton" class="buttonType"/></td>
+										<td><input type="hidden" name="selectedFoglalas" value='<?php echo $item ?>'/></td>
 									<?php
 								}
+								echo '</form>';
 								echo '</tr>';
 							}
 						}
+					}
+					
+					if(isset($_POST["deleteButton"])) {
+						$selectedFoglalas = $_POST["selectedFoglalas"];
+						$felhasznaloSql = "DELETE FROM FOGLALAS WHERE FOGLALAS_ID = '".$selectedFoglalas."'";
+						$felhasznaloStmt = oci_parse($conn, $felhasznaloSql);
+						oci_execute($felhasznaloStmt);		
 					}
 				?>				
 			</table>
