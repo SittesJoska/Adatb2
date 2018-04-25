@@ -157,9 +157,15 @@
 					
 					if(isset($_POST["deleteButton"])) {
 						$selectedFoglalas = $_POST["selectedFoglalas"];
+						
+						$deleteSql = "DELETE FROM SZEMELYFOGLALASAI WHERE FOGLALAS_ID = '".$selectedFoglalas."'";
+						$deleteStmt = oci_parse($conn, $deleteSql);
+						oci_execute($deleteStmt);
+						
 						$felhasznaloSql = "DELETE FROM FOGLALAS WHERE FOGLALAS_ID = '".$selectedFoglalas."'";
 						$felhasznaloStmt = oci_parse($conn, $felhasznaloSql);
-						oci_execute($felhasznaloStmt);		
+						oci_execute($felhasznaloStmt);
+						header('Refresh: 0.5; URL = reservationsPage.php');
 					}
 				?>				
 			</table>
