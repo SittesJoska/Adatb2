@@ -131,4 +131,33 @@ function insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId
 	$stmt_insert_szemely_foglalasai = oci_parse($conn, $sql_insert_szemely_foglalasai);
 	oci_execute($stmt_insert_szemely_foglalasai);
 }
+
+function deleteAccount() {
+	if(!($conn = connect())){
+		return false;
+	}
+	
+	$user = $_SESSION["user"];
+	
+	$felhasznaloSql = "SELECT FOGLALAS_ID FROM SZEMELYFOGLALASAI WHERE FELHASZNALONEV = '".$user."'";
+	$felhasznaloStmt = oci_parse($conn, $felhasznaloSql);
+	oci_execute($felhasznaloStmt);
+	
+	while($foglalasRow = oci_fetch_array($felhasznaloStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+		foreach ($foglalasRow as $foglalas_id) {
+			
+			$deleteSql = "DELETE FROM SZEMELYFOGLALASAI WHERE FELHASZNALONEV = '".$user."'";
+			$deleteStmt = oci_parse($conn, $deleteSql);
+			oci_execute($deleteStmt);
+			
+			$deleteFoglalasSql = "DELETE FROM FOGLALAS WHERE FOGLALAS_ID = '".$foglalas_id."'";
+			$deleteFoglalasStmt = oci_parse($conn, $deleteFoglalasSql);
+			oci_execute($deleteFoglalasStmt);
+		}
+	}
+	
+	$deleteAccountSql = "DELETE FROM SZEMELY WHERE FELHASZNALONEV = '".$user."'";
+	$deleteAccountStmt = oci_parse($conn, $deleteAccountSql);
+	oci_execute($deleteAccountStmt);
+}
 ?>

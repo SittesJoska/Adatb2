@@ -72,6 +72,17 @@
 	
 	
 				
-	</div>  
+	<?php 
+		if(strcmp($_SESSION["user"], 'admin') !== 0) {
+			echo '<form method="POST">';
+				echo '<input type="submit" style="padding:20px; margin:2%;  width:auto;" value="Fiók törlése" name="deleteAccount" class="buttonType"/>';
+			echo '</form>';
+		}
+		
+		if(isset($_POST["deleteAccount"])) {
+			deleteAccount();
+		}
+	 ?>
+	 </div>
   </body>
 </html>
