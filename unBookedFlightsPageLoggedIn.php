@@ -239,7 +239,7 @@
 			<form method="POST"><div style="text-align:center; margin:auto; margin-top:4%;width=50%;"><input type="submit" style="font-size:20px; margin-left:5px;" value="Lefoglal" name="bookButton" class="buttonType"/></div></form>
 			<?php 
 			if(isset($_POST["bookButton"])) {
-				$egyenlegSql = "SELECT EGYENLEG FROM BANKSZAMLA WHERE BANKSZAMLASZAM = (SELECT BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '".$_SESSION["user"]."'";
+				$egyenlegSql = "SELECT EGYENLEG FROM BANKSZAMLA WHERE BANKSZAMLASZAM = (SELECT BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '".$_SESSION["user"]."')";
 				$egyenlegStmt = oci_parse($conn, $egyenlegSql);
 				oci_execute($egyenlegStmt);
 				$egyenlegRow = oci_fetch_row($egyenlegStmt);

@@ -76,7 +76,7 @@
 							$gyerekRow = oci_fetch_row($gyerekStmt);
 							$gyerekek_szama = $gyerekRow[0];
 							
-							$etkezesSql = "SELECT OSZTALY FROM FOGLALAS WHERE FOGLALAS_ID = '".$item."'";
+							$etkezesSql = "SELECT ETKEZES FROM FOGLALAS WHERE FOGLALAS_ID = '".$item."'";
 							$etkezesStmt = oci_parse($conn, $etkezesSql);
 							oci_execute($etkezesStmt);
 							$etkezesRow = oci_fetch_row($etkezesStmt);
