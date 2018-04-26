@@ -156,6 +156,16 @@ function deleteAccount() {
 		}
 	}
 	
+	$bankszamlaSql = "SELECT BANKSZAMLA FROM SZEMELY WHERE FELHASZNALONEV = '".$user."'";
+	$bankszamlaStmt = oci_parse($conn, $bankszamlaSql);
+	oci_execute($bankszamlaStmt);
+	$bankszamlaRow = oci_fetch_row($bankszamlaStmt);
+	$bankszamlaszam = $bankszamlaRow[0];
+	
+	$deleteSzamlaSql = "DELETE FROM BANKSZAMLA WHERE BANKSZAMLASZAM = '".$bankszamlaszam."'";
+	$deleteSzamlaStmt = oci_parse($conn, $deleteSzamlaSql);
+	oci_execute($deleteSzamlaStmt);
+	
 	$deleteAccountSql = "DELETE FROM SZEMELY WHERE FELHASZNALONEV = '".$user."'";
 	$deleteAccountStmt = oci_parse($conn, $deleteAccountSql);
 	oci_execute($deleteAccountStmt);
@@ -182,6 +192,16 @@ function deleteAccountByAdmin($selectedAccount) {
 			oci_execute($deleteFoglalasStmt);
 		}
 	}
+	
+	$bankszamlaSql = "SELECT BANKSZAMLA FROM SZEMELY WHERE FELHASZNALONEV = '".$user."'";
+	$bankszamlaStmt = oci_parse($conn, $bankszamlaSql);
+	oci_execute($bankszamlaStmt);
+	$bankszamlaRow = oci_fetch_row($bankszamlaStmt);
+	$bankszamlaszam = $bankszamlaRow[0];
+	
+	$deleteSzamlaSql = "DELETE FROM BANKSZAMLA WHERE BANKSZAMLASZAM = '".$bankszamlaszam."'";
+	$deleteSzamlaStmt = oci_parse($conn, $deleteSzamlaSql);
+	oci_execute($deleteSzamlaStmt);
 	
 	$deleteAccountSql = "DELETE FROM SZEMELY WHERE FELHASZNALONEV = '".$selectedAccount."'";
 	$deleteAccountStmt = oci_parse($conn, $deleteAccountSql);
