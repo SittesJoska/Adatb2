@@ -193,7 +193,7 @@ function deleteAccountByAdmin($selectedAccount) {
 		}
 	}
 	
-	$bankszamlaSql = "SELECT BANKSZAMLA FROM SZEMELY WHERE FELHASZNALONEV = '".$user."'";
+	$bankszamlaSql = "SELECT BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '".$selectedAccount."'";
 	$bankszamlaStmt = oci_parse($conn, $bankszamlaSql);
 	oci_execute($bankszamlaStmt);
 	$bankszamlaRow = oci_fetch_row($bankszamlaStmt);
