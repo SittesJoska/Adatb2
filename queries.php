@@ -1,8 +1,8 @@
 <?php
 
 function connect() {
-	$dbuser = "Jaki91";
-	$dbpass = "Vanginkel18";
+	$dbuser = "SinterJóska";
+	$dbpass = "mk8h7a3";
 	$dbname = "xe";
 
 	$tns = "
@@ -157,6 +157,33 @@ function deleteAccount() {
 	}
 	
 	$deleteAccountSql = "DELETE FROM SZEMELY WHERE FELHASZNALONEV = '".$user."'";
+	$deleteAccountStmt = oci_parse($conn, $deleteAccountSql);
+	oci_execute($deleteAccountStmt);
+}
+
+function deleteAccountByAdmin($selectedAccount) {
+	if(!($conn = connect())){
+		return false;
+	}
+	
+	$felhasznaloSql = "SELECT FOGLALAS_ID FROM SZEMELYFOGLALASAI WHERE FELHASZNALONEV = '".$selectedAccount."'";
+	$felhasznaloStmt = oci_parse($conn, $felhasznaloSql);
+	oci_execute($felhasznaloStmt);
+	
+	while($foglalasRow = oci_fetch_array($felhasznaloStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+		foreach ($foglalasRow as $foglalas_id) {
+			
+			$deleteSql = "DELETE FROM SZEMELYFOGLALASAI WHERE FELHASZNALONEV = '".$selectedAccount."'";
+			$deleteStmt = oci_parse($conn, $deleteSql);
+			oci_execute($deleteStmt);
+			
+			$deleteFoglalasSql = "DELETE FROM FOGLALAS WHERE FOGLALAS_ID = '".$foglalas_id."'";
+			$deleteFoglalasStmt = oci_parse($conn, $deleteFoglalasSql);
+			oci_execute($deleteFoglalasStmt);
+		}
+	}
+	
+	$deleteAccountSql = "DELETE FROM SZEMELY WHERE FELHASZNALONEV = '".$selectedAccount."'";
 	$deleteAccountStmt = oci_parse($conn, $deleteAccountSql);
 	oci_execute($deleteAccountStmt);
 }

@@ -59,23 +59,29 @@
 				</tr>
 				
 					<?php
-						$felhasznaloSql = "SELECT * FROM SZEMELY";
+						$felhasznaloSql = "SELECT FELHASZNALONEV FROM SZEMELY WHERE FELHASZNALONEV NOT LIKE 'admin'";
 						$felhasznaloStmt = oci_parse($conn,$felhasznaloSql);
 						oci_execute($felhasznaloStmt);
-						$felhasznaloRow = oci_fetch_row($felhasznaloStmt);
 						
 						while ( $row = oci_fetch_array($felhasznaloStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
 								echo '<tr>';
 								echo '<form method=POST>';
-								foreach ($row as $user_data) {
-									echo '<td>'. $user_data . '</td>';
+								foreach ($row as $item) {
+									echo '<td>'. $item . '</td>';
+									$userDataSql = "SELECT JELSZO, NEV, TELEFONSZAM, EMAIL_CIM, BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '".$item."'";
+									$userDataStmt = oci_parse($conn,$userDataSql);
+									oci_execute($userDataStmt);
+									while ( $dataRow = oci_fetch_array($userDataStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+										foreach ($dataRow as $user_data) {
+											echo '<td>'. $user_data . '</td>';
+										}
+									}
+									
 								}
-								if($_SESSION["user"] == 'admin') {
 					?>
 									<td><input type="submit" style="padding:2px; margin:2%;  width:100px;" value="Törlés" name="deleteUser" class="buttonType"/></td>
-									<td><input type="hidden" name="selectedUser" value='<?php echo $user_data ?>'/></td>
+									<td><input type="hidden" name="selectedUser" value="<?php echo $item ?>"/></td>
 					<?php
-								}
 								echo '</form>';
 								echo '</tr>';
 						}
@@ -83,26 +89,10 @@
 						if(isset($_POST["deleteUser"])) {
 						$selectedUserCount = $_POST["selectedUser"];
 						
-						$selectedUserSql = "SELECT FELHASZNALONEV FROM SZEMELY WHERE BANKSZAMLASZAM='".$selectedUserCount."'";
-						$selectedUserStmt = oci_parse($conn, $selectedUserSql);
-						oci_execute($selectedUserStmt);
-						$selectedUserRow = oci_fetch_row($selectedUserStmt);
-						$selectedUser = $selectedUserRow[0];
+						deleteAccountByAdmin($selectedUserCount);
 						
-						$deleteCountSql = "DELETE FROM BANKSZAMLA WHERE BANKSZAMLASZAM = '".$selectedUserCount."'";
-						$deleteCountStmt = oci_parse($conn, $deleteCountSql);
-						oci_execute($deleteCountStmt);
-						
-						$deleteUserReservationSql = "DELETE FROM SZEMELYFOGLALASAI WHERE FELHASZNALONEV = '".$selectedUser."'";
-						$deleteUserReservationStmt = oci_parse($conn, $deleteUserReservationSql);
-						oci_execute($deleteUserReservationStmt);
-						
-						$deleteUserSql = "DELETE FROM SZEMELY WHERE FELHASZNALONEV = '".$selectedUser."'";
-						$deleteUserStmt = oci_parse($conn, $deleteUserSql);
-						oci_execute($deleteUserStmt);
-						
-						header('Refresh: 2; URL = admin_user_delete.php');
-					}
+						header('Refresh: 0.5; URL = admin_user_delete.php');
+						}
 					?>
 			</table>
 		</div>
