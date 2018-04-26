@@ -81,7 +81,7 @@
 		
 		if(isset($_POST["deleteAccount"])) {
 			deleteAccount();
-			header('Refresh: 2; URL = index.php');
+			header('Refresh: 0.5; URL = index.php');
 			die();
 		}
 	 ?>

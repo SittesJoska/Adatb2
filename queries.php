@@ -143,20 +143,19 @@ function deleteAccount() {
 	$felhasznaloStmt = oci_parse($conn, $felhasznaloSql);
 	oci_execute($felhasznaloStmt);
 	
+	$deleteSql = "DELETE FROM SZEMELYFOGLALASAI WHERE FELHASZNALONEV = '".$user."'";
+	$deleteStmt = oci_parse($conn, $deleteSql);
+	oci_execute($deleteStmt);
+			
 	while($foglalasRow = oci_fetch_array($felhasznaloStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
 		foreach ($foglalasRow as $foglalas_id) {
-			
-			$deleteSql = "DELETE FROM SZEMELYFOGLALASAI WHERE FELHASZNALONEV = '".$user."'";
-			$deleteStmt = oci_parse($conn, $deleteSql);
-			oci_execute($deleteStmt);
-			
 			$deleteFoglalasSql = "DELETE FROM FOGLALAS WHERE FOGLALAS_ID = '".$foglalas_id."'";
 			$deleteFoglalasStmt = oci_parse($conn, $deleteFoglalasSql);
 			oci_execute($deleteFoglalasStmt);
 		}
 	}
 	
-	$bankszamlaSql = "SELECT BANKSZAMLA FROM SZEMELY WHERE FELHASZNALONEV = '".$user."'";
+	$bankszamlaSql = "SELECT BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '".$user."'";
 	$bankszamlaStmt = oci_parse($conn, $bankszamlaSql);
 	oci_execute($bankszamlaStmt);
 	$bankszamlaRow = oci_fetch_row($bankszamlaStmt);
@@ -180,13 +179,12 @@ function deleteAccountByAdmin($selectedAccount) {
 	$felhasznaloStmt = oci_parse($conn, $felhasznaloSql);
 	oci_execute($felhasznaloStmt);
 	
+	$deleteSql = "DELETE FROM SZEMELYFOGLALASAI WHERE FELHASZNALONEV = '".$selectedAccount."'";
+	$deleteStmt = oci_parse($conn, $deleteSql);
+	oci_execute($deleteStmt);
+	
 	while($foglalasRow = oci_fetch_array($felhasznaloStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
 		foreach ($foglalasRow as $foglalas_id) {
-			
-			$deleteSql = "DELETE FROM SZEMELYFOGLALASAI WHERE FELHASZNALONEV = '".$selectedAccount."'";
-			$deleteStmt = oci_parse($conn, $deleteSql);
-			oci_execute($deleteStmt);
-			
 			$deleteFoglalasSql = "DELETE FROM FOGLALAS WHERE FOGLALAS_ID = '".$foglalas_id."'";
 			$deleteFoglalasStmt = oci_parse($conn, $deleteFoglalasSql);
 			oci_execute($deleteFoglalasStmt);
