@@ -140,6 +140,8 @@
 										$ido[1] = '00';
 									}
 									
+									$atszallas=0;
+									
 									echo '<td>' . $honnan . '</td><td>' . $hova . '</td><td>' . $datum . ' ' . $ido[0] . ':' . $ido[1] . '</td><td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . 
 										'</td><td>'. $atszallas .'</td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $felnottek_szama . '</td><td>' . $gyerekek_szama . '</td><td>' . $osztaly . 
 										'</td><td>' . $etkezes . '</td>';

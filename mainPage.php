@@ -109,17 +109,17 @@
 					$honnan = null;
 				
 					if(ISSET($_POST["searchButton"])) {
-							$honnan = 'Róma';
-							$hova = 'Budapest';
+							$honnan = 'Dublin';
+							$hova = 'Párizs';
 							$startDate = '2018-04-23';
 							$_SESSION["startDate"] = $startDate;
-							$felnott = 1;
+							$felnott = 2;
 							$_SESSION["felnottSzam"] = $felnott;
-							$gyerek = 1;
+							$gyerek = 2;
 							$_SESSION["gyerekSzam"] = $gyerek;
 							$seat = 'first';
 							$_SESSION["seat"] = $seat;
-							$etkezes = 'no';
+							$etkezes = 'yes';
 							$_SESSION["etkezes"] = $etkezes;
 				
 							$day = getMenetrend($startDate);
@@ -182,7 +182,51 @@
 													$erkezesOra -= 24;
 												}
 
-												$ar = 80000;
+												$menetrendTavSql = "SELECT TAV FROM Menetrend WHERE Menetrend_id='".$item."'";
+												$menetrendTavStmt = oci_parse($conn, $menetrendTavSql);
+												oci_execute($menetrendTavStmt);
+												$menetrendTavRow = oci_fetch_row($menetrendTavStmt);
+												$menetrendTav = $menetrendTavRow[0];
+												
+												/*$felnottAr = $menetrendTav*$felnott*10;
+												$gyerekAr = $menetrendTav*$gyerek*5;
+												$felnottEsGyerekAr = $felnottAr+$gyerekAr;
+												
+												if($seat=='first') {
+														$felnottEsGyerekAr = $felnottEsGyerekAr*1.5;
+												}
+												
+												if($etkezes=='yes') {
+														$felnottEsGyerekAr = $felnottEsGyerekAr + (($felnott+$gyerek)*2000);
+												}*/
+												
+												$legiTarsArSql = "SELECT AR_ELSO_OSZTALY, AR_MASOD_OSZTALY, GYEREK_KEDVEZMENY, ETKEZES_ARA FROM LEGITARSASAG
+																	WHERE LEGITARSASAG_NEV = (SELECT LEGITARSASAG_NEV FROM MENETREND WHERE MENETREND_ID = '".$item."')";
+												$legiTarsArStmt = oci_parse($conn, $legiTarsArSql);
+												oci_execute($legiTarsArStmt);
+												$legiTarsArRow = oci_fetch_row($legiTarsArStmt);
+												$legiTarsArElsoOszt = $legiTarsArRow[0];
+												$legiTarsArMasodOszt = $legiTarsArRow[1];
+												$legiTarsArGyerekKedv = $legiTarsArRow[2];
+												$legiTarsArEtkAra = $legiTarsArRow[3];
+												
+												$felnottAlapAr = $felnott*$menetrendTav*10;
+												$gyerekAlapAr = $gyerek*$menetrendTav*10 - $legiTarsArGyerekKedv;
+												$alapOsszAr = $felnottAlapAr + $gyerekAlapAr;
+												
+												if($seat=='first') {
+													$osszAr = $alapOsszAr + $legiTarsArElsoOszt;
+												} else if($seat=='second') {
+													$osszar = $alapOsszAr + $legiTarsArMasodOszt;
+												}
+												
+												if($etkezes=='yes') {
+													$vegsoAr = $osszAr + (($felnott+$gyerek)*$legiTarsArEtkAra);
+												} else if($etkezes=='no') {
+														$vegsoAr = $osszAr;
+												}
+												
+												$ar = $vegsoAr;
 												
 												
 												if($ido[1] == 0) {

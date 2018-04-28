@@ -247,7 +247,7 @@
 				
 				if($egyenleg > $ar) {
 					$updatedEgyenleg = $egyenleg - $ar;
-					$updateEgyenleg = "UPDATE BANKSZAMLA SET EGYENLEG = '".$updatedEgyenleg."'";
+					$updateEgyenleg = "UPDATE BANKSZAMLA SET EGYENLEG = '".$updatedEgyenleg."' WHERE BANKSZAMLASZAM = (SELECT BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '".$_SESSION["user"]."')";
 					$updateStmt = oci_parse($conn, $updateEgyenleg);
 					oci_execute($updateStmt);
 					
