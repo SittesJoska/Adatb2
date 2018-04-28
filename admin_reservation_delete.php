@@ -50,48 +50,49 @@
 			
 			<table>
 				<tr>
-					<th>Felhasználónév</th>
-					<th>Jelszó</th>
-					<th>Név</th>
-					<th>Telefonszám</th>
-					<th>Email-cim</th>
-					<th>Bankszámlaszám</th>					
+					<th>Foglalás ID</th>
+					<th>Felnőttek száma</th>
+					<th>Gyerekek száma</th>
+					<th>Étkezés</th>
+					<th>Osztály</th>
+					<th>Dátum</th>
+					<th>Járat ID</th>
 				</tr>
 				
 					<?php
-						$felhasznaloSql = "SELECT FELHASZNALONEV FROM SZEMELY WHERE FELHASZNALONEV NOT LIKE 'admin'";
-						$felhasznaloStmt = oci_parse($conn,$felhasznaloSql);
-						oci_execute($felhasznaloStmt);
+						$foglalasSql = "SELECT FOGLALAS_ID FROM FOGLALAS";
+						$foglalasStmt = oci_parse($conn,$foglalasSql);
+						oci_execute($foglalasStmt);
 						
-						while ( $row = oci_fetch_array($felhasznaloStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+						while ( $row = oci_fetch_array($foglalasStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
 								echo '<tr>';
 								echo '<form method=POST>';
 								foreach ($row as $item) {
 									echo '<td>'. $item . '</td>';
-									$userDataSql = "SELECT JELSZO, NEV, TELEFONSZAM, EMAIL_CIM, BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '".$item."'";
-									$userDataStmt = oci_parse($conn,$userDataSql);
-									oci_execute($userDataStmt);
-									while ( $dataRow = oci_fetch_array($userDataStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
-										foreach ($dataRow as $user_data) {
-											echo '<td>'. $user_data . '</td>';
+									$foglalasDataSql = "SELECT FELNOTTEK_SZAMA, GYEREKEK_SZAMA, ETKEZES, OSZTALY, DATUM, JARAT_ID FROM FOGLALAS WHERE FOGLALAS_ID = '".$item."'";
+									$foglalasDataStmt = oci_parse($conn,$foglalasDataSql);
+									oci_execute($foglalasDataStmt);
+									while ( $dataRow = oci_fetch_array($foglalasDataStmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+										foreach ($dataRow as $foglalas_data) {
+											echo '<td>'. $foglalas_data . '</td>';
 										}
 									}
 									
 								}
 					?>
-									<td><input type="submit" style="padding:2px; margin:2%;  width:100px;" value="Törlés" name="deleteUser" class="buttonType"/></td>
-									<td><input type="hidden" name="selectedUser" value="<?php echo $item ?>"/></td>
+									<td><input type="submit" style="padding:2px; margin:2%;  width:100px;" value="Törlés" name="deleteReservation" class="buttonType"/></td>
+									<td><input type="hidden" name="selectedReservation" value="<?php echo $item ?>"/></td>
 					<?php
 								echo '</form>';
 								echo '</tr>';
 						}
 						
-						if(isset($_POST["deleteUser"])) {
-						$selectedUser = $_POST["selectedUser"];
+						if(isset($_POST["deleteReservation"])) {
+						$selectedReservation = $_POST["selectedReservation"];
 						
-						deleteAccountByAdmin($selectedUser);
+						deleteReservationByAdmin($selectedReservation);
 						
-						header('Refresh: 0.5; URL = admin_user_delete.php');
+						header('Refresh: 5; URL = admin_reservation_delete.php');
 						}
 					?>
 			</table>

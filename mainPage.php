@@ -35,6 +35,7 @@
 		<?php 
 			if(strcmp($_SESSION["user"], 'admin') == 0) {
 				echo '<a href="admin_user_delete.php" ><input type="submit" style="font-size:13px;" value="Felhasználók listája" name="userListButton" class="buttonType"/></a>';
+				echo '<a href="admin_reservation_delete.php" ><input type="submit" style="font-size:13px;" value="Foglalások listája" name="reservationListButton" class="buttonType"/></a>';
 			}
 		?>
 		

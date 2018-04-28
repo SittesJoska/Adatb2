@@ -1,8 +1,8 @@
 <?php
 
 function connect() {
-	$dbuser = "SinterJóska";
-	$dbpass = "mk8h7a3";
+	$dbuser = "Jaki91";
+	$dbpass = "Vanginkel18";
 	$dbname = "xe";
 
 	$tns = "
@@ -204,5 +204,19 @@ function deleteAccountByAdmin($selectedAccount) {
 	$deleteAccountSql = "DELETE FROM SZEMELY WHERE FELHASZNALONEV = '".$selectedAccount."'";
 	$deleteAccountStmt = oci_parse($conn, $deleteAccountSql);
 	oci_execute($deleteAccountStmt);
+}
+
+function deleteReservationByAdmin($selectedReservation) {
+	if(!($conn = connect())){
+		return false;
+	}
+	
+	$deleteUserResSql = "DELETE FROM SZEMELYFOGLALASAI WHERE FOGLALAS_ID = '".$selectedReservation."'";
+	$deleteUserResStmt = oci_parse($conn, $deleteUserResSql);
+	oci_execute($deleteUserResStmt);
+	
+	$deleteReservationSql = "DELETE FROM FOGLALAS WHERE FOGLALAS_ID = '".$selectedReservation."'";
+	$deleteReservationStmt = oci_parse($conn, $deleteReservationSql);
+	oci_execute($deleteReservationStmt);
 }
 ?>
