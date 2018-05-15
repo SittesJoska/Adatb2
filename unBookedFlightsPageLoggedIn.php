@@ -250,6 +250,7 @@
 					$updateEgyenleg = "UPDATE BANKSZAMLA SET EGYENLEG = '".$updatedEgyenleg."' WHERE BANKSZAMLASZAM = (SELECT BANKSZAMLASZAM FROM SZEMELY WHERE FELHASZNALONEV = '".$_SESSION["user"]."')";
 					$updateStmt = oci_parse($conn, $updateEgyenleg);
 					oci_execute($updateStmt);
+					$_SESSION["accountMoney"] = $updatedEgyenleg;
 					
 					$seat = strcmp($osztaly, 'first') == 0 ? 1 : 2;
 					$jaratSql = "SELECT JARAT_ID FROM JARAT WHERE MENETREND_ID = '".$selected."'";
@@ -259,10 +260,11 @@
 					$jaratId = $jarat[0];
 					
 					insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId);
+					//decreasePlaces($jaratId,$seat);
 					
 					header("Location: reservationsPage.php");
 				} else {
-					echo 'A jegy megvásárlásához töltse fel egyenlegét!';
+					echo '<p style="color:red; text-align:center; margin-top:30px;">A jegy megvásárlásához töltse fel egyenlegét!</p>';
 				}
 				
 				

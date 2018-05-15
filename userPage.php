@@ -75,7 +75,7 @@
 	<?php 
 		if(strcmp($_SESSION["user"], 'admin') !== 0) {
 			echo '<form method="POST">';
-				echo '<input type="submit" style="padding:20px; margin:2%;  width:auto;" value="Fiók törlése" name="deleteAccount" class="buttonType"/>';
+				echo '<input type="submit" style="padding:5px; color:red; margin-top:6%;  width:auto;" value="Fiók törlése" name="deleteAccount" class="buttonType"/>';
 			echo '</form>';
 		}
 		

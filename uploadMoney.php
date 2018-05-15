@@ -7,7 +7,7 @@ $conn = connect();
 $accountNumber = $_POST['accountNumber'];
 $accountMoney = $_POST['accountMoney'];
 
-$newMoney=$accountMoney+10000;
+$newMoney=$accountMoney+50000;
 $sql_upload = "UPDATE BANKSZAMLA SET EGYENLEG=$newMoney WHERE $accountNumber=BANKSZAMLASZAM";   
 
 $upload_stmt = oci_parse($conn, $sql_upload);

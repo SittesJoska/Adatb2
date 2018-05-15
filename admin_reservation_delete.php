@@ -46,7 +46,7 @@
 	<div class="container1" style="margin-top:4%;">	
 		
 		<div class="myReservationsDiv">
-			<p style="font-size:28px; margin-top:3%; text-align:center; padding-top:1%; font-weight: bold;">Felhasználók törlése (admin)</p>
+			<p style="font-size:28px; margin-top:3%; text-align:center; padding-top:1%; font-weight: bold;">Foglalások törlése (admin)</p>
 			
 			<table>
 				<tr>

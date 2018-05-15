@@ -109,9 +109,9 @@
 					$honnan = null;
 				
 					if(ISSET($_POST["searchButton"])) {
-							$honnan = 'Dublin';
-							$hova = 'Párizs';
-							$startDate = '2018-04-23';
+							$honnan = 'Róma';
+							$hova = 'Budapest';
+							$startDate = '2018-05-21';
 							$_SESSION["startDate"] = $startDate;
 							$felnott = 2;
 							$_SESSION["felnottSzam"] = $felnott;
