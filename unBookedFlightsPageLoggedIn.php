@@ -260,7 +260,8 @@
 					$jaratId = $jarat[0];
 					
 					insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId);
-					//decreasePlaces($jaratId,$seat);
+					$szemelySzam = $felnott + $gyerek;
+					decreasePlaces($jaratId,$seat,$szemelySzam);
 					
 					header("Location: reservationsPage.php");
 				} else {

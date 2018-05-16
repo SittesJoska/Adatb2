@@ -219,4 +219,54 @@ function deleteReservationByAdmin($selectedReservation) {
 	$deleteReservationStmt = oci_parse($conn, $deleteReservationSql);
 	oci_execute($deleteReservationStmt);
 }
+
+function decreasePlaces($jaratId,$seat,$szemelySzam) {
+	if(!($conn = connect())){
+		return false;
+	}
+	
+	$szabadhelyElso = szabadHelyekElso($jaratId);
+	$szabadhelyMasodik = szabadHelyekMasodik($jaratId);
+	
+	$ujSzabadHelyElso = $szabadhelyElso - $szemelySzam;
+	$ujSzabadHelyMasodik = $szabadhelyMasodik - $szemelySzam;
+
+	if($seat==1) {
+		$updateFreePlaceSql = "UPDATE JARAT SET SZABAD_HELYEK_ELSO = '".$ujSzabadHelyElso."' WHERE JARAT_ID = '".$jaratId."'";
+		$updateFreePlaceStmt = oci_parse($conn,$updateFreePlaceSql);
+		oci_execute($updateFreePlaceStmt);
+	} else {
+		$updateFreePlaceSql = "UPDATE JARAT SET SZABAD_HELYEK_MASODIK = '".$ujSzabadHelyMasodik."' WHERE JARAT_ID = '".$jaratId."'";
+		$updateFreePlaceStmt = oci_parse($conn,$updateFreePlaceSql);
+		oci_execute($updateFreePlaceStmt);
+	}
+}
+
+function szabadHelyekElso($jaratId) {
+	if(!($conn = connect())){
+		return false;
+	}
+	
+	$szabadSql = "SELECT SZABAD_HELYEK_ELSO FROM JARAT WHERE JARAT_ID = '".$jaratId."'";
+	$szabadStmt = oci_parse($conn,$szabadSql);
+	oci_execute($szabadStmt);
+	$szabadRow = oci_fetch_row($szabadStmt);
+	$szabad = $szabadRow[0];
+	
+	return $szabad;
+}
+
+function szabadHelyekMasodik($jaratId) {
+	if(!($conn = connect())){
+		return false;
+	}
+	
+	$szabadSql = "SELECT SZABAD_HELYEK_MASODIK FROM JARAT WHERE JARAT_ID = '".$jaratId."'";
+	$szabadStmt = oci_parse($conn,$szabadSql);
+	oci_execute($szabadStmt);
+	$szabadRow = oci_fetch_row($szabadStmt);
+	$szabad = $szabadRow[0];
+	
+	return $szabad;
+}
 ?>

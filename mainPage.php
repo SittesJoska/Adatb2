@@ -46,7 +46,7 @@
 		<div class="container1" style="margin-top:4%;">
 			<div class="search">
 				<p style="font-size:22px; margin-top:1%; padding-top:1%; font-weight: bold;">Járat keresése</p>
-				<p>Honnan:</p><select name="honnan" class="inputType">
+				<p>Honnan:</p><select name="honnan" class="inputType" required>
 								<option disabled selected value> Válasszon! </option>
 								<?php
 									$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'indul' GROUP BY VAROS_NEV ORDER BY VAROS_NEV ";
@@ -63,7 +63,7 @@
 									}
 								?>
 							</select>
-				<p>Hova:</p><select name="hova" class="inputType">
+				<p>Hova:</p><select name="hova" class="inputType" required>
 								<option disabled selected value> Válasszon! </option>
 								<?php
 									$sql = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE INDUL_ERKEZIK = 'érkezik' GROUP BY VAROS_NEV ORDER BY VAROS_NEV ";
@@ -80,14 +80,14 @@
 									}
 								?>
 							</select>
-				<p>Indulás dátuma</p><input type="date" name="startDate"  min="<?php echo date('Y-m-d');?>" class="inputType"/>	
-				<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults"  size="2" class="inputType" />	
-				<p>Gyerekek száma (kor: 0-14):</p><input type="text" name="numberOfChildren"  size="2" class="inputType" />
+				<p>Indulás dátuma</p><input type="date" name="startDate" required  min="<?php echo date('Y-m-d');?>" class="inputType"/>	
+				<p>Felnõttek száma (kor: 14-):</p><input type="text" name="numberOfAdults" required  size="2" class="inputType" />	
+				<p>Gyerekek száma (kor: 0-14):</p><input type="text" name="numberOfChildren" required  size="2" class="inputType" />
 				<p>Osztály:</p>
-				<input type="radio" name="seat" value="first" class="radioType" >Elsőosztály</input>
+				<input type="radio" name="seat" value="first" class="radioType" checked >Elsőosztály</input>
 				<input type="radio" name="seat" value="second" class="radioType" >Másodosztály</input>
 				<p>Étkezés:</p><input type="radio" name="food" value="yes" class="radioType" >Igen</input>
-							<input type="radio" name="food" value="no" class="radioType" >Nem</input>	
+							<input type="radio" name="food" value="no" class="radioType" checked >Nem</input>	
 				<br/><input type="submit" style="margin-top:10%;" value="Keresés" name="searchButton" class="buttonType"/>
 			</div>
 		</form>
@@ -109,17 +109,17 @@
 					$honnan = null;
 				
 					if(ISSET($_POST["searchButton"])) {
-							$honnan = 'Róma';
-							$hova = 'Budapest';
-							$startDate = '2018-05-21';
+							$honnan = $_POST["honnan"];
+							$hova = $_POST["hova"];
+							$startDate = $_POST["startDate"];
 							$_SESSION["startDate"] = $startDate;
-							$felnott = 2;
+							$felnott = $_POST["numberOfAdults"];
 							$_SESSION["felnottSzam"] = $felnott;
-							$gyerek = 2;
+							$gyerek = $_POST["numberOfChildren"];
 							$_SESSION["gyerekSzam"] = $gyerek;
-							$seat = 'first';
+							$seat = $_POST["seat"];
 							$_SESSION["seat"] = $seat;
-							$etkezes = 'yes';
+							$etkezes = $_POST["food"];
 							$_SESSION["etkezes"] = $etkezes;
 				
 							$day = getMenetrend($startDate);
@@ -217,7 +217,7 @@
 												if($seat=='first') {
 													$osszAr = $alapOsszAr + $legiTarsArElsoOszt;
 												} else if($seat=='second') {
-													$osszar = $alapOsszAr + $legiTarsArMasodOszt;
+													$osszAr = $alapOsszAr + $legiTarsArMasodOszt;
 												}
 												
 												if($etkezes=='yes') {
@@ -233,16 +233,36 @@
 													$ido[1] = '00';
 												}
 												
+												$szemelySzam = $felnott + $gyerek;
+												$szabadHelyekElso = szabadHelyekElso($item);
+												$szabadHelyekMasodik = szabadHelyekMasodik($item);
+												$osztaly = strcmp($seat, 'first') == 0 ? 1 : 2;
+												
 												echo '<td>' . $honnan_kiir . '</td><td>' . $hova_kiir . '</td><td>' . $startDate . ' ' . $ido[0] . ':' . $ido[1] . '</td>
 												<td>' . $erkezesNap . ' ' . $erkezesOra . ':' . $erkezesPerc . '</td><td>'. $atszallas .'</td><td> Óra: ' . $ora . ' Perc: ' . $perc . '</td><td>' . $ar . '</td>';
+												if($osztaly==1) {
+													if($szemelySzam<=$szabadHelyekElso) {
+														echo '<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>';
+													} else {
+														echo '<td><p style="color:red; font-weight:bold;">Nincs hely</p></td>';
+													}
+												}
+												
+												if($osztaly==2) {
+													if($szemelySzam<=$szabadHelyekMasodik) {
+														echo '<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>';
+													} else {
+														echo '<td><p style="color:red; font-weight:bold;">Nincs hely</p></td>';
+													}
+												}
 												?>
-													<td><input type="submit" style="font-size:11px;" value="Kiválaszt" name="chooseButton" class="buttonType"/></td>
 													<td><input type="hidden" name="selected" value='<?php echo $item ?>'/></td>
 													<td><input type="hidden" name="atszallas" value='<?php echo $atszallas ?>'/></td>
 													<td><input type="hidden" name="ar" value='<?php echo $ar ?>'/></td>
 
 												<?php
 										}
+									
 										/*$sql3 = "SELECT MENETREND.Menetrend_id FROM MENETREND INNER JOIN KOZLEKEDIK ON MENETREND.Menetrend_id = KOZLEKEDIK.Menetrend_id WHERE MENETREND.NAP = '".$day."' 
 											AND KOZLEKEDIK.VAROS_NEV = '".$item2."' AND KOZLEKEDIK.INDUL_ERKEZIK = 'indul'";
 											
@@ -416,12 +436,6 @@
 
 			</table>
 		</div>
-	<div>
 
-	
-	
-	
-  
-  
   </body>
 </html>
