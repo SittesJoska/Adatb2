@@ -260,15 +260,9 @@
 					$jaratId = $jarat[0];
 						
 					insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId);
-<<<<<<< HEAD
 					$szemelySzam = $felnott + $gyerek;
 					decreasePlaces($jaratId,$seat,$szemelySzam);
-					
-=======
-						
-					$helyek = $felnott + $gyerek;
-					decreasePlaces($jaratId, $seat, $helyek);						
->>>>>>> 244dd271d24a8bedb171f56d8aae6b045d4ca283
+
 					header("Location: reservationsPage.php");
 				
 				} else {

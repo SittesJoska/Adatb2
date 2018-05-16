@@ -42,6 +42,45 @@
 		<form method='GET' style='display:inline;' action='logout.php'><input type="submit" style="font-size:13px; float:right" value="Kijelentkezés" name="logoutButton" class="buttonType"/></form>
 		<div style="margin-right:1%; margin-top:8px; float:right; font-weight: 900; color:#99183f; font-family:New Century; font-size:15px;"><?php echo $_SESSION["user"]?></div>
 	</div>
+	<div class="div1">
+		<h3>Legnépszerűbb járatok:</h3>
+		<table>
+				<tr>
+					<th>Honnan</th>
+					<th>Hova</th>
+					<th/>
+				</tr>
+		<?php 
+			$sql = "SELECT menetrend_id from (SELECT menetrend.menetrend_id FROM Menetrend INNER JOIN Jarat ON jarat.menetrend_id = menetrend.menetrend_id
+					order by (SELECT COUNT(*) FROM Foglalas WHERE foglalas.jarat_id = jarat.jarat_id) desc) WHERE rownum <= 3";
+					
+			$stmt = oci_parse($conn, $sql);				
+			oci_execute($stmt);
+										
+			while($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS)) {
+					echo '<tr>';
+					foreach ($row as $item) {
+							$sql2 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item."' AND INDUL_ERKEZIK = 'indul'";
+							$stmt2 = oci_parse($conn, $sql2);
+							oci_execute($stmt2);
+							$honnanRow = oci_fetch_row($stmt2);
+							$honnanNepszeru = $honnanRow[0];
+							
+							$sql3 = "SELECT VAROS_NEV FROM KOZLEKEDIK WHERE Menetrend_id = '".$item."' AND INDUL_ERKEZIK = 'érkezik'";
+							$stmt3 = oci_parse($conn, $sql3);
+							oci_execute($stmt3);
+							$hovaRow = oci_fetch_row($stmt3);
+							$hovaNepszeru = $hovaRow[0];
+							
+							echo '<td>' . $honnanNepszeru . '</td><td>' . $hovaNepszeru . '</td><td>';
+
+					}
+					echo '</tr>';
+			}
+			?>
+		</table>
+	</div>
+
 	<form method="POST">
 		<div class="container1" style="margin-top:4%;">
 			<div class="search">
@@ -96,7 +135,7 @@
 			<table>
 				<tr>
 					<th>Honnan</th>
-					<th>Honnan</th>
+					<th>Hova</th>
 					<th>Indul</th>
 					<th>Érkezik</th>
 					<th>Átszállások száma</th>
