@@ -251,24 +251,29 @@
 					$updateStmt = oci_parse($conn, $updateEgyenleg);
 					oci_execute($updateStmt);
 					$_SESSION["accountMoney"] = $updatedEgyenleg;
-					
+						
 					$seat = strcmp($osztaly, 'first') == 0 ? 1 : 2;
 					$jaratSql = "SELECT JARAT_ID FROM JARAT WHERE MENETREND_ID = '".$selected."'";
 					$jaratStmt = oci_parse($conn, $jaratSql);
 					oci_execute($jaratStmt);
 					$jarat = oci_fetch_row($jaratStmt);
 					$jaratId = $jarat[0];
-					
+						
 					insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId);
+<<<<<<< HEAD
 					$szemelySzam = $felnott + $gyerek;
 					decreasePlaces($jaratId,$seat,$szemelySzam);
 					
+=======
+						
+					$helyek = $felnott + $gyerek;
+					decreasePlaces($jaratId, $seat, $helyek);						
+>>>>>>> 244dd271d24a8bedb171f56d8aae6b045d4ca283
 					header("Location: reservationsPage.php");
+				
 				} else {
 					echo '<p style="color:red; text-align:center; margin-top:30px;">A jegy megvásárlásához töltse fel egyenlegét!</p>';
 				}
-				
-				
 			}
 			?>
 		</div>

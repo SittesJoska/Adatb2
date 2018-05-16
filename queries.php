@@ -1,8 +1,8 @@
 <?php
 
 function connect() {
-	$dbuser = "Jaki91";
-	$dbpass = "Vanginkel18";
+	$dbuser = "SinterJóska";
+	$dbpass = "mk8h7a3";
 	$dbname = "xe";
 
 	$tns = "
@@ -130,6 +130,38 @@ function insertFoglalas($felnott, $gyerek, $etkezes, $seat, $startDate, $jaratId
 	$sql_insert_szemely_foglalasai = "INSERT INTO SZEMELYFOGLALASAI VALUES('$user','$maximum')";
 	$stmt_insert_szemely_foglalasai = oci_parse($conn, $sql_insert_szemely_foglalasai);
 	oci_execute($stmt_insert_szemely_foglalasai);
+}
+
+function decreasePlaces($jaratId, $seat, $helyek) {
+	if(!($conn = connect())){
+		return false;
+	}
+	if($seat == 1) {
+		$sql_select_helyek = "SELECT szabad_helyek_elso FROM Jarat WHERE jarat_id = '".$jaratId."'";
+		$sql_helyek_stmt = oci_parse($conn, $sql_select_helyek);
+		oci_execute($sql_helyek_stmt);
+		$helyRow = oci_fetch_row($sql_helyek_stmt);
+		$helyek_szama = $helyRow[0];
+		
+		$helyek_szama -= $helyek;
+		
+		$sql_update_jarat = "UPDATE Jarat SET szabad_helyek_elso = '".$helyek_szama."' WHERE jarat_id = '".$jaratId."'";
+		$sql_update_stmt = oci_parse($conn, $sql_update_jarat);
+		oci_execute($sql_update_stmt);
+		
+	} else if ($seat == 2) {
+		$sql_select_helyek = "SELECT szabad_helyek_masodik FROM Jarat WHERE jarat_id = '".$jaratId."'";
+		$sql_helyek_stmt = oci_parse($conn, $sql_select_helyek);
+		oci_execute($sql_helyek_stmt);
+		$helyRow = oci_fetch_row($sql_helyek_stmt);
+		$helyek_szama = $helyRow[0];
+		
+		$helyek_szama -= $helyek;
+		
+		$sql_update_jarat = "UPDATE Jarat SET szabad_helyek_masodik = '".$helyek_szama."' WHERE jarat_id = '".$jaratId."'";
+		$sql_update_stmt = oci_parse($conn, $sql_update_jarat);
+		oci_execute($sql_update_stmt);
+	}
 }
 
 function deleteAccount() {
